@@ -3,6 +3,17 @@
 </p>
 
 # Perraro Appointment
+![Status](https://img.shields.io/badge/status-in%20progress-orange)
+![Built With](https://img.shields.io/badge/built%20with-n8n%20%7C%20Supabase%20%7C%20HTML-blue)
+![Focus](https://img.shields.io/badge/focus-automation%20%26%20backend-black)
+
+## Quick Links
+
+- [Architecture Documentation](docs/architecture.md)
+- [Test Ride Frontend](frontend/test-ride/index.html)
+- [Dashboard Frontend](frontend/dashboard/index.html)
+- [Test Ride Workflow](workflows/testride.json)
+- [Technician Workflow](workflows/technician/staff.json)
 
 Perraro Appointment, Perraro Electric Bike için geliştirdiğim bir randevu ve operasyon yönetimi projesidir.
 
