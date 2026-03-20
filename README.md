@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="Furkan Karabey Logo" width="180">
+  <img src="assets/logo.png" alt="Furkan Karabey Logo" width="180">
 </p>
 
 # Perraro Appointment
