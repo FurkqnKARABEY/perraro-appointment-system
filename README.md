@@ -1,4 +1,9 @@
+<p align="center">
+  <img src="assets/logo.png" alt="Furkan Karabey Logo" width="180">
+</p>
+
 # Perraro Appointment
+
 
 Perraro Appointment, Perraro Electric Bike için geliştirdiğim bir randevu ve operasyon yönetimi projesidir.
 
