@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perraro Electric Bike — Book a Test Ride</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    #pw {
+      --br: #1a1a2e;
+      --ac: #e63946;
+      --gn: #22c97a;
+      --gn-bg: #edfaf4;
+      --gn-bd: #abe8cc;
+      --rd-bg: #fef0f1;
+      --rd-bd: #f5b4b8;
+      --rd-tx: #c0303c;
+      --sf: #f5f5f3;
+      --cd: #ffffff;
+      --bo: #e2e0da;
+      --tx: #1a1a2e;
+      --mu: #828081;
+      --sh: 0 2px 20px rgba(26,26,46,.07);
+      font-family: 'Barlow', sans-serif !important;
+      font-size: 16px !important;
+      color: var(--tx) !important;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      box-sizing: border-box;
+    }
+
+    #pw *, #pw *::before, #pw *::after {
+      box-sizing: border-box !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    #pw .hero { text-align: center; margin-bottom: 44px; }
+    #pw .hero-badge {
+      display: inline-flex !important; align-items: center; gap: 7px;
+      background: var(--br) !important; color: #fff !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 12px !important; font-weight: 700 !important;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 7px 20px !important; border-radius: 100px !important;
+      margin-bottom: 10px !important; border: none !important;
+      line-height: 1.4 !important;
+    }
+    #pw .hero-tag {
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 1rem !important; font-weight: 700 !important;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--mu) !important; margin-bottom: 6px;
+      display: block;
+    }
+    #pw .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: clamp(2.4rem, 6vw, 4rem) !important;
+      font-weight: 900 !important; text-transform: uppercase;
+      letter-spacing: -1px; line-height: 1 !important;
+      color: var(--br) !important; margin-bottom: 12px !important;
+      padding: 0 !important; border: none !important;
+    }
+    #pw .hero h1 span { color: var(--ac) !important; font-style: italic; }
+    #pw .hero p { font-size: .98rem !important; color: var(--mu) !important; margin: 0 !important; }
+
+    #pw .steps {
+      display: flex !important; align-items: center; justify-content: center;
+      margin-bottom: 36px; list-style: none !important; padding: 0 !important;
+    }
+    #pw .step {
+      display: flex !important; flex-direction: column; align-items: center;
+      gap: 5px; flex: 1; max-width: 110px;
+    }
+    #pw .step-n {
+      width: 34px !important; height: 34px !important; border-radius: 50% !important;
+      display: flex !important; align-items: center; justify-content: center;
+      font-weight: 800 !important; font-size: 13px !important;
+      border: 2px solid var(--bo) !important;
+      color: var(--mu) !important; background: var(--cd) !important;
+      transition: all .3s; z-index: 1; position: relative;
+      line-height: 1 !important;
+    }
+    #pw .step.active .step-n { background: var(--ac) !important; border-color: var(--ac) !important; color: #fff !important; }
+    #pw .step.done .step-n { background: var(--gn) !important; border-color: var(--gn) !important; color: #fff !important; }
+    #pw .step-lbl {
+      font-size: 10px !important; font-weight: 800 !important;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--mu) !important;
+      font-family: 'Barlow', sans-serif !important;
+    }
+    #pw .step.active .step-lbl { color: var(--ac) !important; }
+    #pw .step.done .step-lbl { color: var(--gn) !important; }
+    #pw .step-line {
+      flex: 1; height: 2px !important; background: var(--bo) !important;
+      margin-top: -21px; transition: background .3s;
+    }
+    #pw .step-line.done { background: var(--gn) !important; }
+
+    #pw #success-screen {
+      display: none; background: var(--cd) !important;
+      border-radius: 20px !important; border: 1px solid var(--bo) !important;
+      box-shadow: var(--sh); padding: 70px 40px !important; text-align: center;
+    }
+    #pw .s-icon {
+      width: 72px !important; height: 72px !important; border-radius: 50% !important;
+      background: var(--gn) !important; color: #fff !important; font-size: 2rem !important;
+      display: flex !important; align-items: center; justify-content: center;
+      margin: 0 auto 22px !important;
+    }
+    #pw #success-screen h2 {
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 2.2rem !important; font-weight: 900 !important;
+      text-transform: uppercase; color: var(--br) !important; margin-bottom: 10px !important;
+    }
+    #pw #success-screen p { color: var(--mu) !important; font-size: .95rem !important; line-height: 1.7 !important; max-width: 400px; margin: 0 auto 6px !important; }
+    #pw .conf-box {
+      display: inline-flex !important; flex-direction: column; align-items: center; gap: 4px;
+      background: var(--sf) !important; border: 1.5px solid var(--bo) !important;
+      border-radius: 14px !important; padding: 20px 44px !important; margin-top: 24px !important;
+    }
+    #pw .conf-box .lbl { font-size: .72rem !important; font-weight: 800 !important; letter-spacing: 2px; text-transform: uppercase; color: var(--mu) !important; }
+    #pw .conf-box .num { font-family: 'Barlow Condensed', sans-serif !important; font-size: 2.2rem !important; font-weight: 900 !important; color: var(--br) !important; }
+    #pw .conf-details { display: flex !important; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 18px !important; }
+    #pw .conf-detail { font-size: .88rem !important; color: var(--mu) !important; }
+    #pw .conf-detail strong { color: var(--tx) !important; font-weight: 700 !important; }
+
+    #pw .card {
+      background: var(--cd) !important;
+      border-radius: 20px !important;
+      border: 1px solid var(--bo) !important;
+      box-shadow: var(--sh) !important;
+      overflow: hidden !important;
+      margin-bottom: 24px !important;
+    }
+
+    #pw .sec { padding: 32px 36px !important; border-bottom: 1px solid var(--bo) !important; }
+    #pw .sec:last-of-type { border-bottom: none !important; }
+    #pw .sec-title { display: flex !important; align-items: center; gap: 14px; margin-bottom: 26px !important; }
+    #pw .sec-ico {
+      width: 42px !important; height: 42px !important; min-width: 42px !important;
+      background: var(--br) !important; border-radius: 12px !important;
+      display: flex !important; align-items: center; justify-content: center;
+    }
+    #pw .sec-ico svg { width: 18px !important; height: 18px !important; stroke: #fff !important; fill: none !important; stroke-width: 2.2 !important; stroke-linecap: round; stroke-linejoin: round; }
+    #pw .sec-title h2 {
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 1.2rem !important; font-weight: 800 !important;
+      text-transform: uppercase; letter-spacing: .8px;
+      color: var(--br) !important; margin: 0 !important; padding: 0 !important; border: none !important;
+    }
+    #pw .sec-title p { font-size: .80rem !important; color: var(--mu) !important; margin-top: 2px !important; margin-bottom: 0 !important; }
+
+    #pw .g2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 20px !important; }
+    #pw .g1 { display: grid !important; gap: 20px !important; }
+    #pw .c2 { grid-column: span 2 !important; }
+
+    #pw .fld { display: flex !important; flex-direction: column; gap: 7px; }
+    #pw .fld label {
+      font-size: .82rem !important; font-weight: 700 !important;
+      color: var(--tx) !important; letter-spacing: .3px;
+      display: block !important; margin-bottom: 0 !important;
+      font-family: 'Barlow', sans-serif !important;
+    }
+    #pw .fld label .req { color: var(--ac) !important; margin-left: 2px; }
+
+    #pw .inp, #pw .sel, #pw .txa {
+      width: 100% !important; padding: 12px 16px !important;
+      border: 1.5px solid var(--bo) !important; border-radius: 10px !important;
+      font-size: .93rem !important; font-family: 'Barlow', sans-serif !important;
+      font-weight: 500 !important; color: var(--tx) !important;
+      background: var(--sf) !important; -webkit-appearance: none !important;
+      appearance: none !important; outline: none !important;
+      box-shadow: none !important; transition: border-color .2s !important;
+      line-height: 1.4 !important;
+    }
+    #pw .inp:focus, #pw .sel:focus, #pw .txa:focus {
+      border-color: var(--br) !important;
+      box-shadow: 0 0 0 3px rgba(26,26,46,.07) !important;
+      background: #fff !important; outline: none !important;
+    }
+    #pw .sel {
+      cursor: pointer !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='%231a1a2e' d='M7 9L0 0h14z'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 14px center !important;
+      background-color: var(--sf) !important;
+      padding-right: 36px !important;
+    }
+    #pw .txa { resize: vertical !important; min-height: 90px !important; }
+
+    #pw .phone-row { display: flex !important; gap: 10px !important; align-items: stretch; }
+    #pw .phone-cc {
+      padding: 12px 14px !important; border: 1.5px solid var(--bo) !important;
+      border-radius: 10px !important; font-family: 'Barlow', sans-serif !important;
+      font-size: .93rem !important; font-weight: 700 !important;
+      color: var(--tx) !important; background: var(--sf) !important;
+      white-space: nowrap !important; display: flex !important; align-items: center;
+      gap: 8px; flex-shrink: 0 !important; line-height: 1 !important;
+    }
+    #pw .phone-row .inp { flex: 1 !important; }
+
+    #pw .rcards { display: flex !important; gap: 12px !important; flex-wrap: wrap !important; }
+    #pw .rcard {
+      display: flex !important; align-items: center; gap: 10px;
+      padding: 11px 18px !important; border: 1.5px solid var(--bo) !important;
+      border-radius: 10px !important; cursor: pointer !important;
+      font-size: .88rem !important; font-weight: 700 !important;
+      color: var(--mu) !important; background: var(--sf) !important;
+      transition: all .2s; user-select: none !important;
+      font-family: 'Barlow', sans-serif !important; line-height: 1.4 !important;
+    }
+    #pw .rcard:hover { border-color: var(--br) !important; color: var(--tx) !important; }
+    #pw .rcard input[type="radio"] { display: none !important; }
+    #pw .rdot {
+      width: 17px !important; height: 17px !important; min-width: 17px !important;
+      border-radius: 50% !important; border: 2px solid var(--bo) !important;
+      display: flex !important; align-items: center; justify-content: center;
+      transition: all .2s; background: transparent !important;
+    }
+    #pw .rdot::after {
+      content: '' !important; width: 7px !important; height: 7px !important;
+      border-radius: 50% !important; background: #fff !important;
+      transform: scale(0); transition: transform .2s; display: block !important;
+    }
+    #pw .rcard.sel { border-color: var(--br) !important; background: #eef0ff !important; color: var(--br) !important; }
+    #pw .rcard.sel .rdot { background: var(--br) !important; border-color: var(--br) !important; }
+    #pw .rcard.sel .rdot::after { transform: scale(1) !important; }
+
+    #pw .date-header {
+      display: flex !important; align-items: center;
+      justify-content: space-between; margin-bottom: 12px !important;
+    }
+    #pw .date-header-lbl {
+      font-size: .82rem !important; font-weight: 700 !important;
+      color: var(--tx) !important; letter-spacing: .3px;
+      font-family: 'Barlow', sans-serif !important;
+    }
+    #pw .date-nav { display: flex !important; gap: 6px !important; align-items: center; }
+    #pw .nav-btn {
+      width: 34px !important; height: 34px !important; border-radius: 9px !important;
+      border: 1.5px solid var(--bo) !important; background: var(--cd) !important;
+      cursor: pointer !important; display: flex !important; align-items: center;
+      justify-content: center; transition: all .2s; flex-shrink: 0 !important;
+      padding: 0 !important; appearance: none !important; -webkit-appearance: none !important;
+    }
+    #pw .nav-btn:hover { border-color: var(--br) !important; background: var(--br) !important; }
+    #pw .nav-btn:hover svg { stroke: #fff !important; }
+    #pw .nav-btn svg {
+      width: 14px !important; height: 14px !important;
+      stroke: var(--tx) !important; fill: none !important;
+      stroke-width: 2.5 !important; stroke-linecap: round; stroke-linejoin: round;
+      transition: stroke .15s; display: block !important;
+    }
+
+    #pw .date-strip {
+      display: flex !important; align-items: stretch; gap: 8px !important;
+      overflow-x: auto !important; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding: 2px 0 10px !important;
+      scrollbar-width: none !important;
+    }
+    #pw .date-strip::-webkit-scrollbar { display: none !important; }
+
+    #pw .dbt {
+      flex-shrink: 0 !important; flex-grow: 0 !important; flex-basis: auto !important;
+      scroll-snap-align: start;
+      display: flex !important; flex-direction: column; align-items: center;
+      justify-content: center; gap: 1px !important;
+      padding: 10px 0 !important; width: 76px !important;
+      border-radius: 14px !important; border: 1.5px solid var(--bo) !important;
+      background: var(--sf) !important; cursor: pointer !important;
+      transition: background .18s, border-color .18s, box-shadow .18s;
+      text-align: center !important; appearance: none !important;
+    }
+    #pw .dbt:hover:not(.off) { border-color: var(--br) !important; background: #eef0ff !important; }
+    #pw .dbt.sel {
+      background: var(--br) !important; border-color: var(--br) !important;
+      box-shadow: 0 4px 14px rgba(26,26,46,.2) !important;
+    }
+    #pw .dbt.off { opacity: .3 !important; cursor: not-allowed !important; pointer-events: none; }
+
+    #pw .dbt .dn {
+      font-size: 9.5px !important; font-weight: 800 !important;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--mu) !important; display: block !important;
+      font-family: 'Barlow', sans-serif !important; line-height: 1.2 !important;
+    }
+    #pw .dbt .dd {
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 1.75rem !important; font-weight: 900 !important;
+      line-height: 1.1 !important; color: var(--tx) !important; display: block !important;
+    }
+    #pw .dbt .dm {
+      font-size: 9px !important; font-weight: 700 !important;
+      letter-spacing: .8px; text-transform: uppercase;
+      color: var(--mu) !important; display: block !important;
+      font-family: 'Barlow', sans-serif !important; line-height: 1.2 !important;
+    }
+    #pw .today-tag {
+      font-size: 8.5px !important; font-weight: 800 !important;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--ac) !important; background: #ffeaec !important;
+      padding: 1px 7px !important; border-radius: 4px !important;
+      margin-top: 1px !important; display: inline-block !important;
+      line-height: 1.5 !important;
+    }
+    #pw .dbt.sel .dn, #pw .dbt.sel .dd, #pw .dbt.sel .dm { color: rgba(255,255,255,.9) !important; }
+    #pw .dbt.sel .today-tag { color: #fff !important; background: rgba(255,255,255,.22) !important; }
+
+    #pw .slots-wrap { margin-top: 26px !important; }
+    #pw .slots-lbl {
+      font-size: .82rem !important; font-weight: 700 !important;
+      color: var(--tx) !important; letter-spacing: .3px;
+      margin-bottom: 10px !important; display: block !important;
+      font-family: 'Barlow', sans-serif !important;
+    }
+    #pw .legend { display: flex !important; align-items: center; gap: 16px !important; margin-bottom: 14px !important; }
+    #pw .leg { display: flex !important; align-items: center; gap: 6px !important; font-size: .76rem !important; font-weight: 600 !important; color: var(--mu) !important; font-family: 'Barlow', sans-serif !important; }
+    #pw .leg-dot { width: 11px !important; height: 11px !important; border-radius: 3px !important; display: inline-block !important; }
+    #pw .leg-dot.av { background: var(--gn) !important; }
+    #pw .leg-dot.tk { background: var(--ac) !important; opacity: .5 !important; }
+    #pw .leg-dot.sp { background: var(--br) !important; }
+
+    #pw .slots-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)) !important;
+      gap: 9px !important;
+    }
+    #pw .slot {
+      padding: 12px 6px !important; border-radius: 10px !important;
+      text-align: center !important; font-size: .86rem !important;
+      font-weight: 700 !important; cursor: pointer !important;
+      border: 1.5px solid transparent !important;
+      transition: all .18s; position: relative !important;
+      font-family: 'Barlow', sans-serif !important; line-height: 1.4 !important;
+      display: block !important;
+    }
+    #pw .slot.av { background: var(--gn-bg) !important; border-color: var(--gn-bd) !important; color: #186b44 !important; }
+    #pw .slot.av:hover { background: var(--gn) !important; color: #fff !important; border-color: var(--gn) !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(34,201,122,.25) !important; }
+    #pw .slot.tk { background: var(--rd-bg) !important; border-color: var(--rd-bd) !important; color: var(--rd-tx) !important; cursor: not-allowed !important; opacity: .65 !important; }
+    #pw .slot.sp { background: var(--br) !important; border-color: var(--br) !important; color: #fff !important; box-shadow: 0 4px 14px rgba(26,26,46,.28) !important; }
+    #pw .slot-x { position: absolute !important; top: 3px !important; right: 5px !important; font-size: 8px !important; opacity: .4 !important; }
+
+    #pw .slots-loading { display: flex !important; align-items: center; gap: 10px !important; padding: 16px 0 !important; font-size: .86rem !important; color: var(--mu) !important; }
+    #pw .spin { width: 18px !important; height: 18px !important; border: 2px solid var(--bo) !important; border-top-color: var(--br) !important; border-radius: 50% !important; animation: pw-spin .7s linear infinite !important; display: block !important; flex-shrink: 0 !important; }
+    @keyframes pw-spin { to { transform: rotate(360deg); } }
+
+    #pw .slots-empty {
+      text-align: center !important; padding: 24px !important;
+      color: var(--mu) !important; font-size: .88rem !important;
+      background: #f9f8f6 !important; border-radius: 10px !important;
+      border: 1.5px dashed var(--bo) !important;
+    }
+    #pw .slots-empty strong { display: block !important; color: var(--tx) !important; font-weight: 800 !important; margin-bottom: 4px !important; }
+
+    #pw .consent-box { background: #fffcf0 !important; border: 1.5px solid #e0cc88 !important; border-radius: 12px !important; padding: 20px !important; }
+    #pw .consent-text { font-size: .79rem !important; line-height: 1.7 !important; color: var(--mu) !important; max-height: 120px !important; overflow-y: auto !important; margin-bottom: 14px !important; padding-right: 5px !important; }
+    #pw .consent-check { display: flex !important; align-items: flex-start; gap: 10px !important; cursor: pointer !important; font-size: .88rem !important; font-weight: 700 !important; color: var(--tx) !important; font-family: 'Barlow', sans-serif !important; }
+    #pw .consent-check input[type="checkbox"] {
+      margin-top: 2px !important; width: 16px !important; height: 16px !important;
+      accent-color: var(--br) !important; cursor: pointer !important;
+      flex-shrink: 0 !important; display: block !important;
+    }
+
+    #pw .submit-wrap { background: var(--br) !important; padding: 28px 36px !important; }
+    #pw .submit-btn {
+      width: 100% !important; padding: 17px 24px !important;
+      background: var(--ac) !important; color: #fff !important;
+      border: none !important; border-radius: 11px !important;
+      font-family: 'Barlow Condensed', sans-serif !important;
+      font-size: 1.15rem !important; font-weight: 800 !important;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer !important; transition: all .25s;
+      display: flex !important; align-items: center; justify-content: center; gap: 8px;
+      appearance: none !important; -webkit-appearance: none !important;
+      line-height: 1 !important;
+    }
+    #pw .submit-btn:hover:not(:disabled) { background: #c9303d !important; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(230,57,70,.38) !important; }
+    #pw .submit-btn:disabled { background: #555 !important; cursor: not-allowed !important; transform: none !important; }
+    #pw .submit-hint { text-align: center !important; margin-top: 10px !important; font-size: .75rem !important; color: rgba(255,255,255,.45) !important; font-weight: 500 !important; font-family: 'Barlow', sans-serif !important; }
+
+    #pw .err-msg {
+      display: none; padding: 14px 18px !important; border-radius: 10px !important;
+      margin-top: 16px !important; font-size: .90rem !important; font-weight: 600 !important;
+      background: var(--rd-bg) !important; border: 1.5px solid var(--rd-bd) !important; color: #8b1e25 !important;
+    }
+
+    #pw-loading {
+      display: none; position: fixed !important; inset: 0 !important;
+      background: rgba(26,26,46,.72) !important; backdrop-filter: blur(4px);
+      z-index: 99999 !important; align-items: center; justify-content: center;
+      flex-direction: column; gap: 14px !important;
+    }
+    #pw-loading .big-spin {
+      width: 48px !important; height: 48px !important;
+      border: 3px solid rgba(255,255,255,.2) !important; border-top-color: #fff !important;
+      border-radius: 50% !important; animation: pw-spin .7s linear infinite !important;
+      display: block !important;
+    }
+    #pw-loading p { color: #fff !important; font-size: .95rem !important; font-weight: 600 !important; font-family: 'Barlow', sans-serif !important; }
+
+    @media (max-width: 600px) {
+      #pw { padding: 20px 14px 60px !important; }
+      #pw .sec { padding: 24px 20px !important; }
+      #pw .g2 { grid-template-columns: 1fr !important; }
+      #pw .c2 { grid-column: span 1 !important; }
+      #pw .submit-wrap { padding: 22px 20px !important; }
+      #pw .phone-row { flex-direction: column !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="pw-loading">
+  <div class="big-spin"></div>
+  <p>Booking your appointment…</p>
+</div>
+
+<div id="pw">
+  <div class="hero">
+    <div class="hero-badge">⚡ Santa Ana, California</div>
+    <div class="hero-tag">Perraro Test Ride</div>
+    <h1>Book Your <span>Test Ride</span><br>Experience</h1>
+    <p>Reserve your spot to try any Perraro Electric Bike. Free, no obligation — just pure riding joy.</p>
+  </div>
+
+  <div class="steps" id="steps">
+    <div class="step active" data-step="1"><div class="step-n">1</div><div class="step-lbl">You</div></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="2"><div class="step-n">2</div><div class="step-lbl">Ride</div></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="3"><div class="step-n">3</div><div class="step-lbl">Schedule</div></div>
+    <div class="step-line"></div>
+    <div class="step" data-step="4"><div class="step-n">4</div><div class="step-lbl">Confirm</div></div>
+  </div>
+
+  <div id="success-screen">
+    <div class="s-icon">✓</div>
+    <h2>You're all set!</h2>
+    <p>Your test ride is confirmed. We'll send a reminder to your phone before the appointment.</p>
+    <div class="conf-box">
+      <span class="lbl">Confirmation</span>
+      <span class="num" id="conf-num">—</span>
+    </div>
+    <div class="conf-details">
+      <div class="conf-detail">📅 <strong id="conf-date">—</strong></div>
+      <div class="conf-detail">⏰ <strong id="conf-time">—</strong></div>
+      <div class="conf-detail">📍 <strong>Santa Ana, CA</strong></div>
+    </div>
+  </div>
+
+  <form id="pform" novalidate>
+    <div class="card">
+      <div class="sec">
+        <div class="sec-title">
+          <div class="sec-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div><h2>Personal Information</h2><p>Tell us who you are</p></div>
+        </div>
+        <div class="g2">
+          <div class="fld">
+            <label>First Name <span class="req">*</span></label>
+            <input type="text" name="firstName" class="inp" placeholder="Jane" required>
+          </div>
+          <div class="fld">
+            <label>Last Name <span class="req">*</span></label>
+            <input type="text" name="lastName" class="inp" placeholder="Doe" required>
+          </div>
+          <div class="fld c2">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" name="email" class="inp" placeholder="jane@example.com" required>
+          </div>
+          <div class="fld c2">
+            <label>Phone Number <span class="req">*</span></label>
+            <div class="phone-row">
+              <div class="phone-cc">🇺🇸 US +1</div>
+              <input type="tel" name="phone" class="inp" placeholder="(555) 123-4567" required>
+              <input type="hidden" name="countryCode" value="+1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="sec-title">
+          <div class="sec-ico"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-4.5 3 3.5h4"/></svg></div>
+          <div><h2>Test Ride Details</h2><p>Choose your bike and rider</p></div>
+        </div>
+        <div class="g2">
+          <div class="fld c2">
+            <label>Who will be test riding? <span class="req">*</span></label>
+            <div class="rcards">
+              <label class="rcard"><input type="radio" name="testRider" value="Adult" required><div class="rdot"></div><span>Adult only</span></label>
+              <label class="rcard"><input type="radio" name="testRider" value="Adult and Children"><div class="rdot"></div><span>Adult &amp; Children</span></label>
+            </div>
+          </div>
+          <div class="fld c2">
+            <label>Bike Model <span class="req">*</span></label>
+            <select name="bikeModel" class="sel" required>
+              <option value="">Select a model…</option>
+              <option value="Perraro Polar 750W Electric Trike">Perraro Polar 750W Electric Trike</option>
+              <option value="Perraro Siesta Semi Recumbent Electric Trike">Perraro Siesta Semi Recumbent Electric Trike</option>
+              <option value="Perraro Smart Electric Trike">Perraro Smart Electric Trike</option>
+              <option value="Perraro Kangaroo Front-Load Electric Cargo Trike (Family &amp; Kids)">Perraro Kangaroo Front-Load Electric Cargo Trike (Family &amp; Kids)</option>
+              <option value="Ridex Passenger Seat Electric Trike">Ridex Passenger Seat Electric Trike</option>
+              <option value="Perraro Jaguar II Dual Motor Electric Bike 2300W Peak">Perraro Jaguar II Dual Motor Electric Bike 2300W Peak</option>
+              <option value="Perraro Tiger All Wheel Drive Dual Motor Electric Bike 1500W">Perraro Tiger All Wheel Drive Dual Motor Electric Bike 1500W</option>
+              <option value="Perraro Jaguar Electric Bike 750W">Perraro Jaguar Electric Bike 750W</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="sec-title">
+          <div class="sec-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div><h2>Pick a Date &amp; Time</h2><p>Available Mon–Sat · 11:00 AM – 4:00 PM</p></div>
+        </div>
+
+        <input type="hidden" name="appointment_date" id="f-date">
+        <input type="hidden" name="appointment_time" id="f-time">
+
+        <div class="date-header">
+          <div class="date-header-lbl">Select Date <span class="req" style="color:var(--ac)">*</span></div>
+          <div class="date-nav">
+            <button type="button" class="nav-btn" id="date-prev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button type="button" class="nav-btn" id="date-next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="date-strip" id="date-strip"></div>
+
+        <div class="slots-wrap">
+          <div class="slots-lbl">Select Time <span class="req" style="color:var(--ac)">*</span></div>
+          <div class="legend">
+            <div class="leg"><div class="leg-dot av"></div>Available</div>
+            <div class="leg"><div class="leg-dot tk"></div>Taken</div>
+            <div class="leg"><div class="leg-dot sp"></div>Your pick</div>
+          </div>
+          <div id="slots-content">
+            <div class="slots-empty"><strong>← Choose a date first</strong>Slots will appear here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="sec-title">
+          <div class="sec-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div><h2>Additional Info</h2><p>Optional details to help us prepare</p></div>
+        </div>
+        <div class="g1">
+          <div class="fld">
+            <label>How did you hear about us? <span class="req">*</span></label>
+            <select name="referralSource" class="sel" required>
+              <option value="">Select…</option>
+              <option>Google Search</option>
+              <option>Social Media</option>
+              <option>Friend / Family</option>
+              <option>Advertisement</option>
+              <option>Event</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Message (optional)</label>
+            <textarea name="message" class="txa" placeholder="Any special requests or questions?"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="sec-title">
+          <div class="sec-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div><h2>Terms &amp; Conditions</h2></div>
+        </div>
+        <div class="consent-box">
+          <div class="consent-text">
+            By clicking I Agree below, you are giving your consent to use an electronic signature instead of a paper signature. You have the right to request a paper copy if desired, but by checking the box, you waive that right. You can obtain a paper copy upon written request, and no fee or special software is required. Your agreement to use an electronic signature will continue until you opt out by writing to us. There is no penalty for withdrawing consent. I agree to the processing of my data for registration purposes. I acknowledge the risks involved in using electric bicycles for related activities. I accept responsibility for any injury, damage, or loss resulting from my participation. I release PERRARO ELECTRIC BIKE and its staff from liability and agree to follow their policies and instructions. I consent to the use of photographs or media taken during the activities for promotional purposes. My signature confirms that I have read and understood this agreement, and I release all liability to the fullest extent allowed by law. This agreement cannot be modified except in writing. Any disputes shall be resolved through individual binding arbitration.
+          </div>
+          <label class="consent-check">
+            <input type="checkbox" name="consent" required>
+            <span>I have read and agree to the terms &amp; conditions <span class="req">*</span></span>
+          </label>
+        </div>
+      </div>
+      <div class="submit-wrap">
+        <button type="submit" class="submit-btn" id="submit-btn">🚴 &nbsp;Confirm Appointment</button>
+        <p class="submit-hint">📍 2229 S Wright St, Santa Ana, CA 92705 · Free, no commitment</p>
+      </div>
+    </div>
+
+    <div class="err-msg" id="err-msg"></div>
+  </form>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  const SLOTS_URL = 'https://YOUR_N8N_DOMAIN/webhook/available-slots';
+  const APPT_URL  = 'https://YOUR_N8N_DOMAIN/webhook/appointments';
+
+  const ALL_SLOTS = ['11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM'];
+  const DAYS      = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const MONTHS    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  let selDate = null, selTime = null, offset = 0, cache = {};
+  const SHOW = 21;
+
+  const strip   = document.getElementById('date-strip');
+  const sDiv    = document.getElementById('slots-content');
+  const fDate   = document.getElementById('f-date');
+  const fTime   = document.getElementById('f-time');
+  const form    = document.getElementById('pform');
+  const succScr = document.getElementById('success-screen');
+  const errMsg  = document.getElementById('err-msg');
+  const loader  = document.getElementById('pw-loading');
+  const subBtn  = document.getElementById('submit-btn');
+
+  function todayLA(){
+    return new Date().toLocaleDateString('en-CA', {timeZone: 'America/Los_Angeles'});
+  }
+
+  function buildStrip(){
+    strip.innerHTML = '';
+    const today = todayLA();
+    const laToday = new Date(today + 'T12:00:00');
+
+    for(let i = offset; i < offset + SHOW; i++){
+      const d = new Date(laToday);
+      d.setDate(laToday.getDate() + i);
+      const y = d.toISOString().split('T')[0];
+      const isSun = d.getDay() === 0;
+      const isToday = y === today;
+
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'dbt' + (isSun ? ' off' : '') + (y === selDate ? ' sel' : '');
+      b.dataset.ymd = y;
+      b.innerHTML =
+        '<span class="dn">' + DAYS[d.getDay()] + '</span>' +
+        '<span class="dd">' + d.getDate() + '</span>' +
+        (isToday
+          ? '<span class="today-tag">Today</span>'
+          : '<span class="dm">' + MONTHS[d.getMonth()] + '</span>');
+      if(!isSun) b.addEventListener('click', function(){ pickDate(y); });
+      strip.appendChild(b);
+    }
+  }
+
+  function pickDate(y){
+    selDate = y;
+    selTime = null;
+    fDate.value = y;
+    fTime.value = '';
+    buildStrip();
+    loadSlots(y);
+  }
+
+  document.getElementById('date-next').addEventListener('click', function(){
+    offset += 7;
+    buildStrip();
+  });
+
+  document.getElementById('date-prev').addEventListener('click', function(){
+    offset = Math.max(0, offset - 7);
+    buildStrip();
+  });
+
+  async function loadSlots(y){
+    sDiv.innerHTML = '<div class="slots-loading"><div class="spin"></div> Loading available slots…</div>';
+    if(cache[y]) { renderSlots(cache[y]); return; }
+
+    try{
+      const r = await fetch(SLOTS_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ appointment_date: y })
+      });
+
+      const data = await r.json();
+      const taken = new Set();
+
+      if(data.slots) data.slots.forEach(function(s){
+        if(!s.available) taken.add(to24(s.time));
+      });
+
+      if(data.booked) data.booked.forEach(function(t){
+        taken.add(to24(t));
+      });
+
+      const slots = ALL_SLOTS.map(function(t){
+        return { label: t, available: !taken.has(to24(t)) };
+      });
+
+      cache[y] = slots;
+      renderSlots(slots);
+    } catch(e) {
+      const slots = ALL_SLOTS.map(function(t){
+        return { label: t, available: true };
+      });
+      cache[y] = slots;
+      renderSlots(slots);
+    }
+  }
+
+  function to24(s){
+    if(!s) return '';
+    const v = String(s).trim().toUpperCase();
+    const m = v.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/);
+    if(!m) return v;
+    let h = parseInt(m[1], 10);
+    if(m[3] === 'PM' && h !== 12) h += 12;
+    if(m[3] === 'AM' && h === 12) h = 0;
+    return (h < 10 ? '0' : '') + h + ':' + m[2];
+  }
+
+  function renderSlots(slots){
+    const nowLA = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+    const nowLADate = new Date(nowLA);
+    const todayStr = todayLA();
+    const isToday = selDate === todayStr;
+
+    if(!slots.some(function(s){ return s.available; })){
+      sDiv.innerHTML = '<div class="slots-empty"><strong>No slots on this day</strong>Please pick a different date.</div>';
+      return;
+    }
+
+    const g = document.createElement('div');
+    g.className = 'slots-grid';
+    let anyVisible = false;
+
+    slots.forEach(function(s){
+      let isPast = false;
+
+      if(isToday){
+        const m = s.label.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if(m){
+          let h = parseInt(m[1], 10);
+          const min = parseInt(m[2], 10);
+          const mer = m[3].toUpperCase();
+          if(mer === 'PM' && h !== 12) h += 12;
+          if(mer === 'AM' && h === 12) h = 0;
+          const slotMinutes = h * 60 + min;
+          const nowMinutes  = nowLADate.getHours() * 60 + nowLADate.getMinutes() + 30;
+          if(slotMinutes <= nowMinutes) isPast = true;
+        }
+      }
+
+      if(isPast) return;
+
+      anyVisible = true;
+      const el = document.createElement('div');
+      el.className = 'slot ' + (s.available ? 'av' : 'tk');
+      if(s.label === selTime){
+        el.classList.remove('av');
+        el.classList.add('sp');
+      }
+      el.dataset.time = s.label;
+      el.textContent = s.label;
+      if(!s.available) el.innerHTML += '<span class="slot-x">✕</span>';
+      if(s.available) el.addEventListener('click', function(){ pickSlot(s.label, g); });
+      g.appendChild(el);
+    });
+
+    if(!anyVisible){
+      sDiv.innerHTML = '<div class="slots-empty"><strong>No more slots today</strong>Please pick a different date.</div>';
+      return;
+    }
+
+    sDiv.innerHTML = '';
+    sDiv.appendChild(g);
+  }
+
+  function pickSlot(t, g){
+    selTime = t;
+    fTime.value = t;
+    g.querySelectorAll('.slot').forEach(function(el){
+      if(el.classList.contains('tk')) return;
+      el.classList.remove('sp','av');
+      el.classList.add(el.dataset.time === t ? 'sp' : 'av');
+    });
+    form.dispatchEvent(new Event('change'));
+  }
+
+  document.querySelectorAll('#pw .rcard').forEach(function(c){
+    const inp = c.querySelector('input[type="radio"]');
+    c.addEventListener('click', function(){
+      document.querySelectorAll('#pw .rcard input[name="'+inp.name+'"]').forEach(function(r){
+        r.closest('.rcard').classList.remove('sel');
+      });
+      c.classList.add('sel');
+      inp.checked = true;
+      form.dispatchEvent(new Event('change'));
+    });
+  });
+
+  function setStep(n){
+    document.querySelectorAll('#pw .step').forEach(function(s){
+      const i = parseInt(s.dataset.step, 10);
+      s.classList.remove('active','done');
+      if(i === n) s.classList.add('active');
+      else if(i < n) s.classList.add('done');
+    });
+    document.querySelectorAll('#pw .step-line').forEach(function(l,i){
+      l.classList.toggle('done', i < n - 1);
+    });
+  }
+
+  form.addEventListener('change', function(){
+    const d = {};
+    new FormData(form).forEach(function(v,k){ d[k] = v; });
+    let s = 1;
+    if(d.firstName && d.lastName && d.email && d.phone) s = 2;
+    if(s === 2 && d.testRider && d.bikeModel) s = 3;
+    if(s === 3 && selDate && selTime) s = 4;
+    setStep(s);
+  });
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    errMsg.style.display = 'none';
+
+    const consentBox = form.querySelector('input[name="consent"]');
+    if(!consentBox || !consentBox.checked){
+      showErr('Please read and agree to the terms & conditions before submitting.');
+      consentBox && consentBox.closest('.consent-box').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    if(!selDate){ showErr('Please select a date.'); return; }
+    if(!selTime){ showErr('Please select a time slot.'); return; }
+
+    const d = {};
+    new FormData(form).forEach(function(v,k){ d[k] = v; });
+    d.appointment_date = selDate;
+    d.appointment_time = selTime;
+    d.date             = selDate;
+    d.time             = selTime;
+    d.location         = 'Santa Ana';
+    d.fullPhone        = '+1 ' + (d.phone || '');
+    d.submittedAt      = new Date().toISOString();
+
+    const ts  = Date.now().toString();
+    const rnd = Math.floor(Math.random()*10000).toString().padStart(4,'0');
+    d.appointmentNumber = (ts.slice(-4)+rnd).slice(0,8);
+
+    loader.style.display = 'flex';
+    subBtn.disabled = true;
+
+    try{
+      await fetch(APPT_URL, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(d),
+        mode: 'cors'
+      });
+
+      loader.style.display = 'none';
+      form.style.display = 'none';
+      document.getElementById('steps').style.display = 'none';
+      document.querySelector('#pw .hero').style.display = 'none';
+
+      const parts = selDate.split('-');
+      document.getElementById('conf-num').textContent  = '#' + d.appointmentNumber;
+      document.getElementById('conf-date').textContent = MONTHS[parseInt(parts[1],10)-1] + ' ' + parseInt(parts[2],10) + ', ' + parts[0];
+      document.getElementById('conf-time').textContent = selTime;
+      succScr.style.display = 'block';
+      delete cache[selDate];
+    } catch(err){
+      loader.style.display = 'none';
+      subBtn.disabled = false;
+      showErr('Connection error. Please check your internet and try again.');
+    }
+  });
+
+  function showErr(m){
+    errMsg.innerHTML = '⚠️ ' + m;
+    errMsg.style.display = 'block';
+    errMsg.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  buildStrip();
+  setStep(1);
+})();
+</script>
+</body>
+</html>
