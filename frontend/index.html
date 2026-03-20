@@ -1,0 +1,765 @@
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+#perraro-app {
+  --bg:#ffffff; --surface:#f8f8f6; --surface2:#f0efe9; --surface3:#e4e2da;
+  --accent:#b8924a; --accent2:#d4aa6a;
+  --accent-dim:rgba(184,146,74,0.1); --accent-border:rgba(184,146,74,0.25);
+  --text:#1a1916; --text2:#5a5750; --text3:#9a9690;
+  --danger:#c94040; --danger-dim:rgba(201,64,64,0.08);
+  --success:#3a8f68; --success-dim:rgba(58,143,104,0.12);
+  --warn:#c07830; --warn-dim:rgba(192,120,48,0.1);
+  --radius:10px; --radius-lg:16px;
+  --shadow:0 2px 12px rgba(0,0,0,0.07); --shadow-lg:0 8px 28px rgba(0,0,0,0.11);
+  background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif;
+  max-width:960px; margin:0 auto; padding:0 20px 60px; box-sizing:border-box;
+}
+#perraro-app *,#perraro-app *::before,#perraro-app *::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* HEADER */
+#perraro-app .p-header{padding:40px 0 28px;text-align:center;border-bottom:2px solid var(--surface3);margin-bottom:32px;}
+#perraro-app .p-logo-line{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;}
+#perraro-app .p-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(184,146,74,0.5);animation:p-pulse 2.5s ease-in-out infinite;}
+@keyframes p-pulse{0%,100%{box-shadow:0 0 6px rgba(184,146,74,0.4);}50%{box-shadow:0 0 18px rgba(184,146,74,0.7);}}
+#perraro-app h1.p-title{font-family:'Bebas Neue',sans-serif!important;font-size:clamp(30px,5vw,48px)!important;letter-spacing:4px!important;color:var(--text)!important;line-height:1!important;font-weight:400!important;}
+#perraro-app h1.p-title span{color:var(--accent);}
+#perraro-app .p-subtitle{font-size:11px;letter-spacing:5px;color:var(--text3);text-transform:uppercase;margin-top:6px;}
+
+/* NAV */
+#perraro-app .p-nav{display:flex;gap:6px;background:var(--surface);border:1px solid var(--surface3);border-radius:var(--radius-lg);padding:5px;margin-bottom:32px;}
+#perraro-app .p-tab{flex:1;padding:11px 16px;border-radius:12px;border:none;background:transparent;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.22s;}
+#perraro-app .p-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 3px 12px rgba(184,146,74,0.3);}
+#perraro-app .p-tab:not(.active):hover{background:var(--surface2);color:var(--text);}
+
+/* SECTIONS */
+#perraro-app .p-section{display:none;animation:p-fade 0.28s ease;}
+#perraro-app .p-section.active{display:block;}
+@keyframes p-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* SECTION HEAD */
+#perraro-app .p-sec-head{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+#perraro-app .p-sec-head h2{font-family:'Bebas Neue',sans-serif!important;font-size:24px!important;letter-spacing:2px!important;color:var(--text)!important;font-weight:400!important;}
+#perraro-app .p-sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--surface3),transparent);}
+
+/* FORM */
+#perraro-app .p-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+#perraro-app .p-group{display:flex;flex-direction:column;gap:5px;}
+#perraro-app .p-group.full{grid-column:1/-1;}
+#perraro-app .p-group label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;}
+#perraro-app input,#perraro-app select,#perraro-app textarea{
+  background:var(--bg);border:1.5px solid var(--surface3);border-radius:var(--radius);
+  padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  width:100%;outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  -webkit-appearance:none;appearance:none;
+}
+#perraro-app input:focus,#perraro-app select:focus,#perraro-app textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+#perraro-app select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a9690' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer;}
+#perraro-app textarea{resize:vertical;min-height:100px;}
+
+/* DATE PICKER STRIP */
+#perraro-app .p-date-strip-wrap{overflow-x:auto;overflow-y:visible;padding-bottom:4px;scrollbar-width:thin;scrollbar-color:var(--surface3) transparent;}
+#perraro-app .p-date-strip{display:flex;gap:8px;width:max-content;padding:2px;}
+#perraro-app .p-date-btn{
+  padding:10px 18px;border-radius:var(--radius);border:1.5px solid var(--surface3);
+  background:var(--bg);color:var(--text2);font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.18s;white-space:nowrap;
+  flex-shrink:0;
+}
+#perraro-app .p-date-btn:hover{border-color:var(--accent-border);color:var(--accent);}
+#perraro-app .p-date-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(184,146,74,0.3);}
+
+/* SLOT GRID */
+#perraro-app .p-slot-wrap{margin-top:16px;min-height:80px;}
+#perraro-app .p-slot-loading{display:flex;align-items:center;gap:8px;color:var(--text3);font-size:13px;padding:20px 0;}
+#perraro-app .p-slot-grid{display:flex;flex-wrap:wrap;gap:8px;}
+#perraro-app .p-slot{
+  padding:10px 16px;border-radius:var(--radius);border:1.5px solid transparent;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all 0.18s;min-width:80px;text-align:center;
+}
+#perraro-app .p-slot.available{background:var(--success-dim);color:var(--success);border-color:rgba(58,143,104,0.25);}
+#perraro-app .p-slot.available:hover{background:var(--success);color:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(58,143,104,0.3);}
+#perraro-app .p-slot.booked{background:var(--danger-dim);color:var(--danger);border-color:rgba(201,64,64,0.2);cursor:not-allowed;opacity:0.7;}
+#perraro-app .p-slot.selected{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 12px rgba(184,146,74,0.4);}
+#perraro-app .p-slot-msg{font-size:13px;color:var(--text3);padding:16px 0;font-style:italic;}
+
+/* BUTTONS */
+#perraro-app .p-btn{padding:13px 28px;border-radius:var(--radius);border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
+#perraro-app .p-btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+#perraro-app .p-btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,146,74,0.35);}
+#perraro-app .p-btn-primary:active{transform:none;}
+#perraro-app .p-btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+#perraro-app .p-btn-danger{background:var(--danger-dim);color:var(--danger);border:1.5px solid rgba(201,64,64,0.25);letter-spacing:3px;}
+#perraro-app .p-btn-danger:hover{background:var(--danger);color:#fff;}
+#perraro-app .p-btn-danger:disabled{opacity:.5;cursor:not-allowed;}
+#perraro-app .p-btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--surface3);}
+#perraro-app .p-btn-ghost:hover{background:var(--surface3);color:var(--text);}
+#perraro-app .p-form-actions{margin-top:22px;display:flex;justify-content:flex-end;gap:10px;}
+
+/* TOAST */
+#perraro-toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;z-index:99999;transform:translateY(80px);opacity:0;transition:all 0.3s cubic-bezier(.34,1.56,.64,1);max-width:320px;pointer-events:none;}
+#perraro-toast.show{transform:translateY(0);opacity:1;}
+#perraro-toast.success{background:#f0faf4;color:#3a8f68;border:1.5px solid rgba(58,143,104,0.3);box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+#perraro-toast.error{background:#fdf2f2;color:#c94040;border:1.5px solid rgba(201,64,64,0.3);box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+#perraro-toast.info{background:#fdf8f0;color:#b8924a;border:1.5px solid rgba(184,146,74,0.3);box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+
+/* DASHBOARD */
+#perraro-app .p-dash-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+#perraro-app .p-dash-label::after{content:'';flex:1;height:1px;background:var(--surface3);}
+#perraro-app .p-today-wrap{overflow-x:auto;overflow-y:visible;padding-bottom:8px;margin-bottom:32px;scrollbar-width:thin;scrollbar-color:var(--surface3) transparent;}
+#perraro-app .p-today-scroll{display:flex;gap:12px;width:max-content;padding:4px 2px;}
+#perraro-app .p-today-card{width:190px;flex-shrink:0;background:var(--bg);border:1.5px solid var(--accent-border);border-radius:var(--radius-lg);padding:16px;position:relative;overflow:hidden;box-shadow:var(--shadow);transition:transform 0.2s,box-shadow 0.2s;}
+#perraro-app .p-today-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+#perraro-app .p-today-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+#perraro-app .p-today-time{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--accent);line-height:1;margin-bottom:4px;}
+#perraro-app .p-today-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;}
+#perraro-app .p-countdown{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:20px;display:inline-block;}
+#perraro-app .p-countdown.future{background:var(--success-dim);color:var(--success);}
+#perraro-app .p-countdown.now{background:var(--warn-dim);color:var(--warn);animation:p-blink 1s ease-in-out infinite;}
+#perraro-app .p-countdown.past{background:var(--surface2);color:var(--text3);}
+@keyframes p-blink{0%,100%{opacity:1}50%{opacity:0.4}}
+#perraro-app .p-today-empty,#perraro-app .p-appt-empty{background:var(--surface);border:1.5px dashed var(--surface3);border-radius:var(--radius-lg);padding:28px;text-align:center;color:var(--text3);font-size:13px;}
+#perraro-app .p-appt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+#perraro-app .p-appt-card{background:var(--bg);border:1.5px solid var(--surface3);border-radius:var(--radius-lg);padding:18px;cursor:pointer;transition:all 0.2s;position:relative;box-shadow:var(--shadow);}
+#perraro-app .p-appt-card:hover{border-color:var(--accent-border);transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+#perraro-app .p-appt-num{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px;}
+#perraro-app .p-appt-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;}
+#perraro-app .p-appt-date{font-size:12px;color:var(--text3);margin-bottom:12px;}
+#perraro-app .p-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;display:inline-block;}
+#perraro-app .p-badge-scheduled{background:var(--success-dim);color:var(--success);}
+#perraro-app .p-badge-expired{background:var(--surface2);color:var(--text3);}
+#perraro-app .p-badge-cancelled{background:var(--danger-dim);color:var(--danger);}
+#perraro-app .p-tap-hint{position:absolute;top:16px;right:14px;font-size:10px;color:var(--text3);opacity:0;transition:opacity 0.2s;}
+#perraro-app .p-appt-card:hover .p-tap-hint{opacity:1;}
+#perraro-app .p-refresh-btn{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;padding:5px 12px;border-radius:8px;transition:color 0.2s,background 0.2s;font-family:'DM Sans',sans-serif;font-weight:600;}
+#perraro-app .p-refresh-btn:hover{color:var(--accent);background:var(--accent-dim);}
+#perraro-app .p-sep{height:1px;background:var(--surface3);margin:24px 0;}
+
+/* CANCEL */
+#perraro-app .p-cancel-wrap{max-width:480px;margin:0 auto;}
+#perraro-app .p-cancel-card{background:var(--bg);border:1.5px solid rgba(201,64,64,0.2);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow);}
+#perraro-app .p-cancel-card p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:22px;}
+#perraro-app .p-cancel-row{display:flex;gap:10px;}
+#perraro-app .p-cancel-row input{flex:1;}
+
+/* LOADING */
+#perraro-app .p-loading{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text3);font-size:13px;padding:36px;}
+#perraro-app .p-loader{width:18px;height:18px;border:2px solid var(--surface3);border-top-color:var(--accent);border-radius:50%;animation:p-spin 0.7s linear infinite;display:inline-block;flex-shrink:0;}
+@keyframes p-spin{to{transform:rotate(360deg)}}
+
+/* MODAL */
+#perraro-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);z-index:99990;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.22s;}
+#perraro-modal-overlay.open{opacity:1;pointer-events:all;}
+#perraro-modal{background:#fff;border:1.5px solid rgba(184,146,74,0.25);border-radius:16px;padding:26px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;transform:scale(0.93);transition:transform 0.22s;position:relative;font-family:'DM Sans',sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.18);}
+#perraro-modal-overlay.open #perraro-modal{transform:scale(1);}
+#perraro-modal .pm-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:#f0efe9;border:none;cursor:pointer;color:#5a5750;font-size:15px;line-height:30px;text-align:center;transition:all 0.2s;}
+#perraro-modal .pm-close:hover{background:#c94040;color:#fff;}
+#perraro-modal .pm-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:#1a1916;margin-bottom:2px;padding-right:40px;}
+#perraro-modal .pm-num{font-size:10px;color:#b8924a;letter-spacing:2px;font-weight:700;margin-bottom:16px;}
+#perraro-modal .pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+#perraro-modal .pm-field label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9a9690;font-weight:700;display:block;}
+#perraro-modal .pm-field p{font-size:13px;color:#1a1916;margin-top:2px;font-weight:500;}
+#perraro-modal .pm-reason{background:#f8f8f6;border:1.5px solid #e4e2da;border-radius:10px;padding:14px;margin-bottom:18px;}
+#perraro-modal .pm-reason label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#9a9690;font-weight:700;display:block;}
+#perraro-modal .pm-reason p{font-size:13px;color:#5a5750;margin-top:5px;line-height:1.6;}
+#perraro-modal .pm-sep{height:1px;background:#e4e2da;margin:16px 0;}
+#perraro-modal .pm-msg-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#9a9690;font-weight:700;margin-bottom:10px;}
+#perraro-modal .pm-msg-row{display:flex;gap:8px;}
+#perraro-modal .pm-msg-row input{flex:1;background:#f8f8f6;border:1.5px solid #e4e2da;border-radius:10px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:#1a1916;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+#perraro-modal .pm-msg-row input:focus{border-color:#b8924a;}
+#perraro-modal .pm-send-btn{padding:11px 18px;border-radius:10px;border:none;background:linear-gradient(135deg,#b8924a,#d4aa6a);color:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.2s;flex-shrink:0;display:inline-flex;align-items:center;gap:6px;text-transform:uppercase;}
+#perraro-modal .pm-send-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(184,146,74,0.35);}
+#perraro-modal .pm-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  #perraro-app .p-form-grid{grid-template-columns:1fr;}
+  #perraro-modal .pm-grid{grid-template-columns:1fr;}
+  #perraro-app .p-cancel-row{flex-direction:column;}
+  #perraro-app .p-tab{font-size:10px;padding:9px 6px;letter-spacing:0;}
+  #perraro-modal .pm-msg-row{flex-direction:column;}
+}
+</style>
+
+<div id="perraro-app">
+  <div class="p-header">
+    <div class="p-logo-line">
+      <div class="p-logo-dot"></div>
+      <h1 class="p-title"><span>Perraro</span> Appointment System</h1>
+      <div class="p-logo-dot"></div>
+    </div>
+    <div class="p-subtitle">Service Management Dashboard</div>
+  </div>
+
+  <div class="p-nav">
+    <button class="p-tab active" onclick="perraroTab('create')">📋 New Appointment</button>
+    <button class="p-tab" onclick="perraroTab('dashboard')">📊 Dashboard</button>
+    <button class="p-tab" onclick="perraroTab('cancel')">❌ Cancel</button>
+  </div>
+
+  <div id="p-tab-create" class="p-section active">
+    <div class="p-sec-head"><h2>New Appointment</h2><div class="p-sec-line"></div></div>
+    <div class="p-form-grid">
+      <div class="p-group"><label>First Name</label><input id="p-first" type="text" placeholder="John"/></div>
+      <div class="p-group"><label>Last Name</label><input id="p-last" type="text" placeholder="Doe"/></div>
+      <div class="p-group"><label>Phone Number (US)</label><input id="p-phone" type="tel" placeholder="+1 (555) 000-0000"/></div>
+      <div class="p-group"><label>Email Address</label><input id="p-email" type="email" placeholder="john@example.com"/></div>
+
+      <div class="p-group full">
+        <label>Time Zone</label>
+        <select id="p-tz" onchange="perraroOnTzChange()">
+          <option value="">Select timezone…</option>
+          <option value="America/New_York|EDT|-4">EDT — Eastern Daylight Time (UTC−4)</option>
+          <option value="America/New_York|EST|-5">EST — Eastern Standard Time (UTC−5)</option>
+          <option value="America/Chicago|CDT|-5">CDT — Central Daylight Time (UTC−5)</option>
+          <option value="America/Chicago|CST|-6">CST — Central Standard Time (UTC−6)</option>
+          <option value="America/Denver|MDT|-6">MDT — Mountain Daylight Time (UTC−6)</option>
+          <option value="America/Denver|MST|-7">MST — Mountain Standard Time (UTC−7)</option>
+          <option value="America/Los_Angeles|PDT|-7">PDT — Pacific Daylight Time (UTC−7)</option>
+          <option value="America/Los_Angeles|PST|-8">PST — Pacific Standard Time (UTC−8)</option>
+        </select>
+      </div>
+
+      <div class="p-group full">
+        <label>Select Date</label>
+        <div class="p-date-strip-wrap" id="p-date-strip-wrap">
+          <div class="p-date-strip" id="p-date-strip"></div>
+        </div>
+      </div>
+
+      <div class="p-group full">
+        <label>Select Time Slot</label>
+        <div class="p-slot-wrap" id="p-slot-wrap">
+          <div class="p-slot-msg">Please select a date to see available slots.</div>
+        </div>
+      </div>
+
+      <div class="p-group full">
+        <label>Appointment Type</label>
+        <select id="p-type">
+          <option value="">Select type…</option>
+          <option value="repair">Repair Service</option>
+          <option value="installation">Installation</option>
+          <option value="consultation">Consultation</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="warranty">Warranty Service</option>
+          <option value="inspection">Inspection</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="p-group full">
+        <label>Reason / Notes</label>
+        <textarea id="p-reason" placeholder="Describe the reason for this appointment, issue details, special instructions…"></textarea>
+      </div>
+    </div>
+
+    <div class="p-form-actions">
+      <button class="p-btn p-btn-ghost" onclick="perraroClear()">Clear</button>
+      <button class="p-btn p-btn-primary" id="p-create-btn" onclick="perraroCreate()">Create Appointment</button>
+    </div>
+  </div>
+
+  <div id="p-tab-dashboard" class="p-section">
+    <div class="p-sec-head">
+      <h2>Dashboard</h2>
+      <div class="p-sec-line"></div>
+      <button class="p-refresh-btn" onclick="perraroLoad()">↻ Refresh</button>
+    </div>
+    <div class="p-dash-label">Today's Appointments</div>
+    <div id="p-today-container"><div class="p-loading"><div class="p-loader"></div> Loading…</div></div>
+    <div class="p-sep"></div>
+    <div class="p-dash-label">All Appointments</div>
+    <div id="p-appt-container"><div class="p-loading"><div class="p-loader"></div> Loading…</div></div>
+  </div>
+
+  <div id="p-tab-cancel" class="p-section">
+    <div class="p-sec-head"><h2>Cancel Appointment</h2><div class="p-sec-line"></div></div>
+    <div class="p-cancel-wrap">
+      <div class="p-cancel-card">
+        <p>Enter the appointment number to cancel it. You can find the number on the dashboard cards. This action cannot be undone.</p>
+        <div class="p-cancel-row">
+          <input id="p-cancel-num" type="text" placeholder="e.g. PRR-ABC123-XYZ"/>
+          <button class="p-btn p-btn-danger" id="p-cancel-btn" onclick="perraroCancel()">CANCEL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="perraro-modal-overlay" onclick="perraroOverlayClick(event)">
+  <div id="perraro-modal">
+    <button class="pm-close" onclick="perraroCloseModal()">✕</button>
+    <div class="pm-name" id="pm-name">—</div>
+    <div class="pm-num"  id="pm-num">—</div>
+    <div class="pm-grid">
+      <div class="pm-field"><label>Phone</label><p id="pm-phone">—</p></div>
+      <div class="pm-field"><label>Email</label><p id="pm-email">—</p></div>
+      <div class="pm-field"><label>Date</label><p id="pm-date">—</p></div>
+      <div class="pm-field"><label>Time</label><p id="pm-time">—</p></div>
+      <div class="pm-field"><label>Timezone</label><p id="pm-tz">—</p></div>
+      <div class="pm-field"><label>Type</label><p id="pm-type">—</p></div>
+      <div class="pm-field"><label>Status</label><p id="pm-status">—</p></div>
+    </div>
+    <div class="pm-reason"><label>Reason / Notes</label><p id="pm-reason">—</p></div>
+    <div class="pm-sep"></div>
+    <div class="pm-msg-label">Send Message</div>
+    <div class="pm-msg-row">
+      <input id="pm-msg" type="text" placeholder="Type a message to the customer…" onkeydown="if(event.key==='Enter') perraroSendMsg()"/>
+      <button class="pm-send-btn" id="pm-send-btn" onclick="perraroSendMsg()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div id="perraro-toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── ENDPOINTS ── */
+var EP = {
+  create:  'https://YOUR_N8N_DOMAIN/webhook/appointmentscreate',
+  lookup:  'https://YOUR_N8N_DOMAIN/webhook/appointmentslookup',
+  slots:   'https://YOUR_N8N_DOMAIN/webhook/available-slots',
+  message: 'https://YOUR_N8N_DOMAIN/webhook/messagee',
+  cancel:  'https://YOUR_N8N_DOMAIN/webhook/appointmentcancel'
+};
+
+/* ── STATE ── */
+var currentAppt = null;
+var cdIntervals = [];
+var selectedDate = null;
+var selectedTime = null;
+
+/* ── HELPERS ── */
+var _tt;
+function toast(msg, type) {
+  var t = document.getElementById('perraro-toast');
+  t.className = 'show ' + (type||'info');
+  t.textContent = msg;
+  clearTimeout(_tt);
+  _tt = setTimeout(function(){ t.classList.remove('show'); }, 4200);
+}
+
+function genNum() {
+  return 'PRR-' + Date.now().toString(36).toUpperCase().slice(-6) + '-' + Math.random().toString(36).slice(2,5).toUpperCase();
+}
+
+function fmtDate(d) {
+  if(!d) return '—';
+  try { return new Date(d.slice(0,10)+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+  catch(e) { return d; }
+}
+
+function fmtTime(t) {
+  if(!t) return '—';
+  try {
+    var p = t.slice(0,5).split(':'), h = parseInt(p[0],10), m = parseInt(p[1],10);
+    return (h%12||12) + ':' + (m<10?'0':'') + m + (h>=12?' PM':' AM');
+  } catch(e) { return t; }
+}
+
+function parseDt(d,t) {
+  if(!d) return null;
+  try { return new Date(d.slice(0,10)+'T'+((t||'00:00').slice(0,5))); } catch(e) { return null; }
+}
+
+function getTimeDiff(d,t) {
+  var dt = parseDt(d,t); return dt ? Math.floor((dt-Date.now())/1000) : null;
+}
+
+function fmtCd(s) {
+  if(s<0) return 'Passed';
+  var h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+  if(h>0) return h+'h '+m+'m';
+  if(m>0) return m+'m '+sec+'s';
+  return sec+'s';
+}
+
+window.perraroTab = function(tab) {
+  ['create','dashboard','cancel'].forEach(function(t){
+    document.getElementById('p-tab-'+t).classList.remove('active');
+  });
+  document.querySelectorAll('#perraro-app .p-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('p-tab-'+tab).classList.add('active');
+  document.querySelectorAll('#perraro-app .p-tab')[['create','dashboard','cancel'].indexOf(tab)].classList.add('active');
+  if(tab==='dashboard') perraroLoad();
+};
+
+var DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var MON_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function getTodayInTimezone(ianaZone) {
+  try {
+    var parts = new Intl.DateTimeFormat('en-CA', { timeZone: ianaZone, year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date());
+    return parts;
+  } catch(e) {
+    return new Date().toISOString().slice(0,10);
+  }
+}
+
+function addDaysToIso(isoStr, days) {
+  var parts = isoStr.split('-');
+  var d = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+  d.setDate(d.getDate() + days);
+  var y = d.getFullYear();
+  var m = String(d.getMonth()+1).padStart(2,'0');
+  var day = String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+
+function getDayOfWeek(isoStr) {
+  var parts = isoStr.split('-');
+  var d = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+  return d.getDay();
+}
+
+function buildDateStrip() {
+  var strip = document.getElementById('p-date-strip');
+  strip.innerHTML = '';
+
+  var tzRaw = document.getElementById('p-tz').value;
+  var ianaZone = tzRaw ? tzRaw.split('|')[0] : Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var todayIso = getTodayInTimezone(ianaZone);
+
+  for(var i=0; i<14; i++) {
+    var iso = addDaysToIso(todayIso, i);
+    var dayParts = iso.split('-');
+    var month = parseInt(dayParts[1],10)-1;
+    var dayNum = parseInt(dayParts[2],10);
+    var dow = getDayOfWeek(iso);
+
+    var label = (i===0 ? 'Today' : i===1 ? 'Tomorrow' : DAY_NAMES[dow]) + ' · ' + MON_NAMES[month] + ' ' + dayNum;
+
+    var btn = document.createElement('button');
+    btn.className = 'p-date-btn';
+    btn.textContent = label;
+    btn.dataset.iso = iso;
+    btn.onclick = (function(isoDate, el) {
+      return function() { selectDate(isoDate, el); };
+    })(iso, btn);
+    strip.appendChild(btn);
+  }
+}
+
+function selectDate(iso, el) {
+  selectedDate = iso;
+  selectedTime = null;
+  document.querySelectorAll('#p-date-strip .p-date-btn').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  loadSlots(iso);
+}
+
+window.perraroOnTzChange = function() {
+  if(document.getElementById('p-tz').value) {
+    buildDateStrip();
+    document.getElementById('p-slot-wrap').innerHTML = '<div class="p-slot-msg">Please select a date to see available slots.</div>';
+    selectedDate = null; selectedTime = null;
+  }
+};
+
+function loadSlots(date) {
+  var tzRaw = document.getElementById('p-tz').value;
+  if(!tzRaw) { toast('Please select a timezone first.','error'); return; }
+  var tzParts = tzRaw.split('|');
+
+  var wrap = document.getElementById('p-slot-wrap');
+  wrap.innerHTML = '<div class="p-slot-loading"><div class="p-loader"></div> Loading available slots…</div>';
+
+  fetch(EP.slots, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ date: date, timezone: tzParts[0], timezoneAbbr: tzParts[1] })
+  })
+  .then(function(res) {
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return res.json();
+  })
+  .then(function(data) {
+    renderSlots(data);
+  })
+  .catch(function(e) {
+    console.error('Slots error:', e);
+    wrap.innerHTML = '<div class="p-slot-msg">Could not load slots. Please check your connection.</div>';
+  });
+}
+
+function renderSlots(data) {
+  var wrap = document.getElementById('p-slot-wrap');
+  wrap.innerHTML = '';
+
+  var slots = Array.isArray(data) ? data : (data.slots || data.data || []);
+  if(slots.length && slots[0] && slots[0].json) slots = slots.map(function(s){ return s.json; });
+
+  if(!slots || !slots.length) {
+    wrap.innerHTML = '<div class="p-slot-msg">No slots available for this date. Please select a different day.</div>';
+    return;
+  }
+
+  var grid = document.createElement('div');
+  grid.className = 'p-slot-grid';
+
+  slots.forEach(function(slot) {
+    var timeStr, isAvailable;
+    if(typeof slot === 'string') {
+      timeStr = slot; isAvailable = true;
+    } else {
+      timeStr = slot.time || slot.slot || slot.hour || '';
+      if(typeof slot.available === 'boolean') isAvailable = slot.available;
+      else if(slot.status) isAvailable = (slot.status === 'available' || slot.status === 'open');
+      else isAvailable = true;
+    }
+
+    var btn = document.createElement('button');
+    btn.className = 'p-slot ' + (isAvailable ? 'available' : 'booked');
+    btn.textContent = fmtTime(timeStr);
+    btn.title = isAvailable ? 'Available' : 'Unavailable';
+    btn.disabled = !isAvailable;
+
+    if(isAvailable) {
+      btn.onclick = (function(t, el) {
+        return function() {
+          document.querySelectorAll('#p-slot-wrap .p-slot').forEach(function(s){ s.classList.remove('selected'); });
+          el.classList.add('selected');
+          selectedTime = t;
+        };
+      })(timeStr, btn);
+    }
+    grid.appendChild(btn);
+  });
+
+  wrap.appendChild(grid);
+}
+
+window.perraroCreate = async function() {
+  var first  = document.getElementById('p-first').value.trim();
+  var last   = document.getElementById('p-last').value.trim();
+  var phone  = document.getElementById('p-phone').value.trim();
+  var email  = document.getElementById('p-email').value.trim();
+  var tzRaw  = document.getElementById('p-tz').value;
+  var atype  = document.getElementById('p-type').value;
+  var reason = document.getElementById('p-reason').value.trim();
+
+  if(!first || !last) return toast('Please enter first and last name.','error');
+  if(!phone)          return toast('Phone number is required.','error');
+  if(!tzRaw)          return toast('Please select a timezone.','error');
+  if(!selectedDate)   return toast('Please select a date.','error');
+  if(!selectedTime)   return toast('Please select a time slot.','error');
+
+  var tzParts = tzRaw.split('|');
+  var payload = {
+    appointmentNumber: genNum(),
+    firstName: first, lastName: last,
+    phone: phone, email: email,
+    date: selectedDate, time: selectedTime,
+    timezone: tzParts[0], timezoneAbbr: tzParts[1], timezoneOffset: tzParts[2],
+    appointmentType: atype, reason: reason
+  };
+
+  var btn = document.getElementById('p-create-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="p-loader" style="width:14px;height:14px;border-width:2px;"></span> Creating…';
+
+  try {
+    var res = await fetch(EP.create, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    toast('✅ Appointment created! #'+payload.appointmentNumber,'success');
+    perraroClear();
+  } catch(e) {
+    toast('❌ Failed to create appointment. Check your API configuration.','error');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Create Appointment';
+  }
+};
+
+window.perraroClear = function() {
+  ['p-first','p-last','p-phone','p-email','p-reason'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('p-tz').value   = '';
+  document.getElementById('p-type').value = '';
+  selectedDate = null; selectedTime = null;
+  document.querySelectorAll('#p-date-strip .p-date-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('p-slot-wrap').innerHTML = '<div class="p-slot-msg">Please select a date to see available slots.</div>';
+};
+
+window.perraroLoad = async function() {
+  cdIntervals.forEach(clearInterval); cdIntervals = [];
+  document.getElementById('p-today-container').innerHTML = '<div class="p-loading"><div class="p-loader"></div> Loading…</div>';
+  document.getElementById('p-appt-container').innerHTML  = '<div class="p-loading"><div class="p-loader"></div> Loading…</div>';
+
+  try {
+    var res = await fetch(EP.lookup, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    var data = await res.json();
+
+    var appts = Array.isArray(data) ? data : (data.appointments || data.data || []);
+    if(appts.length && appts[0] && appts[0].json) appts = appts.map(function(a){ return a.json; });
+
+    renderToday(appts);
+    renderAll(appts);
+  } catch(e) {
+    console.error('Dashboard error:', e);
+    document.getElementById('p-today-container').innerHTML = '<div class="p-today-empty">Could not load appointments.</div>';
+    document.getElementById('p-appt-container').innerHTML  = '<div class="p-appt-empty">Could not load appointments.</div>';
+  }
+};
+
+function renderToday(appts) {
+  var todayStr = new Date().toISOString().slice(0,10);
+  var todays = appts.filter(function(a){ return (a.appointment_date||'').slice(0,10) === todayStr; });
+  var container = document.getElementById('p-today-container');
+
+  if(!todays.length) {
+    container.innerHTML = '<div class="p-today-empty">No appointments scheduled for today.</div>';
+    return;
+  }
+
+  todays.sort(function(a,b){ return (a.appointment_time||'').localeCompare(b.appointment_time||''); });
+
+  var wrap = document.createElement('div'); wrap.className = 'p-today-wrap';
+  var scroll = document.createElement('div'); scroll.className = 'p-today-scroll';
+
+  todays.forEach(function(a) {
+    var card = document.createElement('div'); card.className = 'p-today-card';
+    var cd = document.createElement('div'); cd.className = 'p-countdown future';
+    card.innerHTML = '<div class="p-today-time">'+fmtTime(a.appointment_time)+'</div>'+
+      '<div class="p-today-name">'+(a.first_name||'')+' '+(a.last_name||'')+'</div>';
+    card.appendChild(cd); scroll.appendChild(card);
+    var id = setInterval(function(){
+      var diff = getTimeDiff(a.appointment_date, a.appointment_time);
+      if(diff===null){cd.textContent='—';return;}
+      if(diff<0){ cd.className='p-countdown past'; cd.textContent='Passed'; }
+      else if(diff<600){ cd.className='p-countdown now'; cd.textContent='NOW'; }
+      else { cd.className='p-countdown future'; cd.textContent=fmtCd(diff); }
+    }, 1000);
+    cdIntervals.push(id);
+  });
+
+  wrap.appendChild(scroll); container.innerHTML=''; container.appendChild(wrap);
+}
+
+function renderAll(appts) {
+  var container = document.getElementById('p-appt-container');
+  if(!appts.length){ container.innerHTML='<div class="p-appt-empty">No appointments found.</div>'; return; }
+
+  var now = new Date();
+  appts = appts.map(function(a){
+    if((a.status||'')==='scheduled'){
+      var dt = parseDt(a.appointment_date, a.appointment_time);
+      if(dt && dt<now) a._expired = true;
+    }
+    return a;
+  });
+  appts.sort(function(a,b){
+    var aA = (a.status==='scheduled'&&!a._expired), bA = (b.status==='scheduled'&&!b._expired);
+    if(aA!==bA) return aA?-1:1;
+    return (a.appointment_date||'').localeCompare(b.appointment_date||'');
+  });
+
+  var grid = document.createElement('div'); grid.className = 'p-appt-grid';
+  appts.forEach(function(a){
+    var card = document.createElement('div'); card.className='p-appt-card';
+    var sk = a._expired?'expired':((a.status||'scheduled').toLowerCase());
+    var sl = sk.charAt(0).toUpperCase()+sk.slice(1);
+    card.innerHTML = '<div class="p-appt-num">'+(a.appointment_number||'—')+'</div>'+
+      '<div class="p-appt-name">'+(a.first_name||'')+' '+(a.last_name||'')+'</div>'+
+      '<div class="p-appt-date">'+fmtDate(a.appointment_date)+' · '+fmtTime(a.appointment_time)+'</div>'+
+      '<span class="p-badge p-badge-'+sk+'">'+sl+'</span>'+
+      '<div class="p-tap-hint">tap to view ↗</div>';
+    card.addEventListener('click', function(){ perraroOpenModal(a); });
+    grid.appendChild(card);
+  });
+  container.innerHTML=''; container.appendChild(grid);
+}
+
+window.perraroOpenModal = function(a) {
+  currentAppt = a;
+  document.getElementById('pm-name').textContent  = (a.first_name||'')+' '+(a.last_name||'');
+  document.getElementById('pm-num').textContent   = '# '+(a.appointment_number||'—');
+  document.getElementById('pm-phone').textContent = a.phone||'—';
+  document.getElementById('pm-email').textContent = a.email||'—';
+  document.getElementById('pm-date').textContent  = fmtDate(a.appointment_date);
+  document.getElementById('pm-time').textContent  = fmtTime(a.appointment_time);
+  document.getElementById('pm-tz').textContent    = a.timezone_abbr||a.timezoneAbbr||a.timezone||'—';
+  document.getElementById('pm-type').textContent  = a.appointment_type||'—';
+  document.getElementById('pm-status').textContent= a.status||'—';
+  document.getElementById('pm-reason').textContent= a.reason||a.message||'No notes provided.';
+  document.getElementById('pm-msg').value = '';
+  document.getElementById('perraro-modal-overlay').classList.add('open');
+};
+
+window.perraroCloseModal = function() {
+  document.getElementById('perraro-modal-overlay').classList.remove('open');
+  currentAppt = null;
+};
+
+window.perraroOverlayClick = function(e) {
+  if(e.target===document.getElementById('perraro-modal-overlay')) perraroCloseModal();
+};
+
+window.perraroSendMsg = async function() {
+  if(!currentAppt) return;
+  var msg = document.getElementById('pm-msg').value.trim();
+  if(!msg) return toast('Please type a message first.','error');
+  var btn = document.getElementById('pm-send-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;display:inline-block;animation:p-spin 0.7s linear infinite;"></span>';
+  try {
+    var res = await fetch(EP.message, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        appointmentNumber: currentAppt.appointment_number,
+        phone: currentAppt.phone, email: currentAppt.email,
+        firstName: currentAppt.first_name, lastName: currentAppt.last_name,
+        message: msg
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    document.getElementById('pm-msg').value = '';
+    toast('✅ Message sent!','success');
+  } catch(e) {
+    toast('❌ Failed to send message.','error');
+    console.error(e);
+  } finally {
+    btn.disabled=false; btn.textContent='Send';
+  }
+};
+
+window.perraroCancel = async function() {
+  var num = document.getElementById('p-cancel-num').value.trim();
+  if(!num) return toast('Please enter an appointment number.','error');
+  var btn = document.getElementById('p-cancel-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span style="width:13px;height:13px;border:2px solid rgba(201,64,64,0.3);border-top-color:#c94040;border-radius:50%;display:inline-block;animation:p-spin 0.7s linear infinite;"></span>';
+  try {
+    var res = await fetch(EP.cancel, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ appointmentNumber: num })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    toast('✅ Appointment '+num+' cancelled.','success');
+    document.getElementById('p-cancel-num').value='';
+  } catch(e) {
+    toast('❌ Cancellation failed.','error');
+    console.error(e);
+  } finally {
+    btn.disabled=false; btn.textContent='CANCEL';
+  }
+};
+
+buildDateStrip();
+})();
+</script>
