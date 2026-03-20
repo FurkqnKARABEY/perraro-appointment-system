@@ -81,8 +81,8 @@ workflows/
     staff.json
   testride.json
 README.md
-Durum
 
+Durum
 Bu repo şu anda geliştirme ve düzenleme aşamasındadır.
 Bazı dosyalar sadeleştiriliyor, bazı workflow içerikleri paylaşılabilir hale getiriliyor ve proje portföy sunumuna uygun şekilde temizleniyor.
 
