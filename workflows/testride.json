@@ -1,0 +1,1223 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "tableId": "appointments",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "appointment_create_date",
+              "fieldValue": "={{ $now.toUTC().toFormat('yyyy-MM-dd HH:mm:ss') }}"
+            },
+            {
+              "fieldId": "appointment_date",
+              "fieldValue": "={{ $json.body.appointment_date }}"
+            },
+            {
+              "fieldId": "first_name",
+              "fieldValue": "={{ $json.body.firstName }}"
+            },
+            {
+              "fieldId": "last_name",
+              "fieldValue": "={{ $json.body.lastName }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $json.body.email }}"
+            },
+            {
+              "fieldId": "who_will_be_test_riding",
+              "fieldValue": "={{ $json.body.testRider }}"
+            },
+            {
+              "fieldId": "product_model",
+              "fieldValue": "={{ $json.body.bikeModel }}"
+            },
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $json.body.phone }}"
+            },
+            {
+              "fieldId": "referral_source",
+              "fieldValue": "={{ $json.body.referralSource }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ $json.body.message }}"
+            },
+            {
+              "fieldId": "test_ride",
+              "fieldValue": "Yes"
+            },
+            {
+              "fieldId": "appointment_number",
+              "fieldValue": "={{ $json.body.appointmentNumber }}"
+            },
+            {
+              "fieldId": "technician_call_24_before",
+              "fieldValue": "No"
+            },
+            {
+              "fieldId": "test_ride_2_before",
+              "fieldValue": "No"
+            },
+            {
+              "fieldId": "technician_call_24_before",
+              "fieldValue": "No"
+            },
+            {
+              "fieldId": "technician_call_30dk",
+              "fieldValue": "No"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "scheduled"
+            },
+            {
+              "fieldId": "appointment_time",
+              "fieldValue": "={{ $json.body.appointment_time || $json.body.time }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2912,
+        448
+      ],
+      "id": "bbe69009-8698-46f1-b7b7-4f14cf190e9b",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_SUPABASE_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "appointments",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2080,
+        464
+      ],
+      "id": "889bb0b0-f248-41f8-9e4a-6469718432f0",
+      "name": "Webhook costumer appointment",
+      "webhookId": "REPLACE_ME"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID_1",
+        "text": "=New Test Ride Appointment 🔧\n\nCustomer: {{ JSON.parse($('Webhook costumer appointment').item.json.body).firstName }} {{ JSON.parse($('Webhook costumer appointment').item.json.body).lastName }}\nPhone: {{ JSON.parse($('Webhook costumer appointment').item.json.body).phone }}\n\nBike Model: {{ JSON.parse($('Webhook costumer appointment').item.json.body).bikeModel }}\nDate: {{ JSON.parse($('Webhook costumer appointment').item.json.body).appointment_date }}\nTime: {{ JSON.parse($('Webhook costumer appointment').item.json.body).appointment_time }}\n\nLocation: 2229 S Wright St, Santa Ana, CA 92705\n\nConfirmation #{{ JSON.parse($('Webhook costumer appointment').item.json.body).appointmentNumber }}\n\nPlease prepare the bike and ensure it's ready for the test ride.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3744,
+        512
+      ],
+      "id": "55e6e4b0-6bf4-499d-bd38-85cc8e58d8a7",
+      "name": "Send a text message1",
+      "webhookId": "REPLACE_ME",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_TELEGRAM_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openphone.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "YOUR_OPENPHONE_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content\": \"Hi {{ JSON.parse($('Webhook costumer appointment').item.json.body).firstName }}! 👋\\n\\nYour appointment has been created!\\n\\n🚴 Test Ride: {{ JSON.parse($('Webhook costumer appointment').item.json.body).bikeModel }}\\n📅 Date: {{ JSON.parse($('Webhook costumer appointment').item.json.body).appointment_date }}\\n🕒 Time: {{ JSON.parse($('Webhook costumer appointment').item.json.body).appointment_time }}\\n📍 Location: 2229 S Wright St, Santa Ana, CA 92705\\n\\nWe're excited to see you!\\n\\nConfirmation #{{ JSON.parse($('Webhook costumer appointment').item.json.body).appointmentNumber }}\\n\\n- Perraro Electric Bikes\",\n  \"from\": \"YOUR_OPENPHONE_NUMBER_ID\",\n  \"to\": [\n    \"+1{{ String(JSON.parse($('Webhook costumer appointment').item.json.body).phone || '').replace(/\\D/g, '') }}\"\n  ],\n  \"userId\": \"YOUR_OPENPHONE_USER_ID\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3872,
+        256
+      ],
+      "id": "b8d70e85-f1f4-4fdc-a60d-9d6617bf6a96",
+      "name": "HTTP summary"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3648,
+        256
+      ],
+      "id": "7d89cec9-b343-4884-a4f2-da50b8e476fa",
+      "name": "Wait",
+      "webhookId": "REPLACE_ME"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4384,
+        480
+      ],
+      "id": "ce919bb0-99f8-4056-b8fd-d1b81548cad9",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID_2",
+        "text": "=New Test Ride Appointment 🔧\n\nCustomer: {{ $('Webhook costumer appointment').item.json.body.firstName }} {{ $('Webhook costumer appointment').item.json.body.lastName }}\nPhone: {{ $('Webhook costumer appointment').item.json.body.phone }}\n\nBike Model: {{ $('Webhook costumer appointment').item.json.body.bikeModel }}\nDate: {{ $('Webhook costumer appointment').item.json.body.date }}\nTime: {{ $('Webhook costumer appointment').item.json.body.time }}\n\nLocation: {{ $('Webhook costumer appointment').item.json.body.location }}\n\nConfirmation #{{ $('Webhook costumer appointment').item.json.body.appointmentNumber }}\n\nPlease prepare the bike and ensure it's ready for the test ride.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3728,
+        704
+      ],
+      "id": "267c9437-315b-44c8-852c-f99755a573d6",
+      "name": "Send a text message21",
+      "webhookId": "REPLACE_ME",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_TELEGRAM_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "appointments",
+        "limit": 500
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        1632
+      ],
+      "id": "4702ea50-314e-4a73-bc96-c50df24e19dc",
+      "name": "Get many rows2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_SUPABASE_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "appointments",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "appointment_number",
+              "condition": "eq",
+              "keyValue": "={{ $json.appointment_number }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "test_ride_24_before",
+              "fieldValue": "Yes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3904,
+        944
+      ],
+      "id": "2d4a0f67-7929-49f7-bb22-b6a999e56378",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_SUPABASE_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "appointments",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "appointment_number",
+              "condition": "eq",
+              "keyValue": "={{ $json.appointment_number }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "test_ride_2_before",
+              "fieldValue": "Yes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3904,
+        1744
+      ],
+      "id": "48c90791-9d5a-4aae-b67d-cc6e16944b26",
+      "name": "Update a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_SUPABASE_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        2048,
+        1632
+      ],
+      "id": "96869b0f-d7ba-46bc-baa7-0bac97a1a363",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Santa Ana (America/Los_Angeles) sabit lokasyon\n// Timezone dönüşümü gerekmiyor, veriyi olduğu gibi geçiriyoruz\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2304,
+        1632
+      ],
+      "id": "e33de5aa-1edc-4e05-b2c4-5bb10f45974c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID_1",
+        "text": "=24h reminder sent to {{ $json.first_name }} | {{ $json.appointment_date }} {{ $json.appointment_time }} | Conf #{{ $json.appointment_number }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3904,
+        1312
+      ],
+      "id": "3ff47ddf-b5f7-4d8e-b298-d8a05924ea1b",
+      "name": "Send a text message22",
+      "webhookId": "REPLACE_ME",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_TELEGRAM_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openphone.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "YOUR_OPENPHONE_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content\": \"Hi {{ $json.first_name }}! 👋\\n\\nThis is a friendly reminder about your test ride tomorrow!\\n\\n🚴 Test Ride: {{ $json.test_model }}\\n📅 Tomorrow: {{ $json.appointment_date }}\\n⏰ Time: {{ $json.appointment_time }}\\n📍 Location: 2229 S Wright St, Santa Ana, CA 92705\\n\\nWe're looking forward to seeing you!\\n\\nConfirmation #{{ $json.appointment_number }}\\n\\n- Perraro Electric Bikes\",\n  \"from\": \"YOUR_OPENPHONE_NUMBER_ID\",\n  \"to\": [\n    \"+1{{ $json.phone }}\"\n  ],\n  \"userId\": \"YOUR_OPENPHONE_USER_ID\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3904,
+        1120
+      ],
+      "id": "ea338021-8f13-44f7-aa42-ca75b4952ae0",
+      "name": "HTTP summary9"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4464,
+        1280
+      ],
+      "id": "218fcd25-d0bd-4ad6-9699-e2c9c1f8a332",
+      "name": "Merge10"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID_2",
+        "text": "=24h reminder sent to {{ $json.first_name }} | {{ $json.appointment_date }} {{ $json.appointment_time }} | Conf #{{ $json.appointment_number }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3904,
+        1472
+      ],
+      "id": "ff935204-fa59-40d1-80ac-dc96276c048a",
+      "name": "Send a text message23",
+      "webhookId": "REPLACE_ME",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_TELEGRAM_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID_1",
+        "text": "={\n  \"content\": \"{{ $json.first_name }} made test ride appointment, {{ $json.test_model }} test ride is confirmed for {{ $json.appointment_date }} {{ $json.appointment_time }}.\\nConfirmation #{{ $json.appointment_number }}\",\n  \"from\": \"YOUR_OPENPHONE_NUMBER_ID\",\n  \"to\": [\n    \"+1{{ $json.phone }}\"\n  ],\n  \"userId\": \"YOUR_OPENPHONE_USER_ID\"\n} ",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3904,
+        2112
+      ],
+      "id": "af043063-ebac-4e9a-a83b-0e34577caa4a",
+      "name": "Send a text message24",
+      "webhookId": "REPLACE_ME",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_TELEGRAM_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openphone.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "YOUR_OPENPHONE_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"content\": \"Hi {{ $json.first_name }}, {{ $json.test_model }} test ride is confirmed for {{ $json.appointment_date }} {{ $json.appointment_time }}.\\n\\n📍 Location: 2229 S Wright St, Santa Ana, California 92705\\n\\nSee you soon!\\n\\nPerraro Electric Bike Confirmation #{{ $json.appointment_number }}\",\n  \"from\": \"YOUR_OPENPHONE_NUMBER_ID\",\n  \"to\": [\n    \"+1{{ $json.phone }}\"\n  ],\n  \"userId\": \"YOUR_OPENPHONE_USER_ID\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3904,
+        1920
+      ],
+      "id": "fe79efb8-dfa6-42ba-96e9-438a56d62e84",
+      "name": "HTTP summary10"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4528,
+        1840
+      ],
+      "id": "b836ba20-6be2-4aaa-bb6b-82bc1814dc3c",
+      "name": "Merge11"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID_2",
+        "text": "={\n  \"content\": \"{{ $json.first_name }} made test ride appointment, {{ $json.test_model }} test ride is confirmed for {{ $json.appointment_date }} {{ $json.appointment_time }}.\\nConfirmation #{{ $json.appointment_number }}\",\n  \"from\": \"YOUR_OPENPHONE_NUMBER_ID\",\n  \"to\": [\n    \"+1{{ $json.phone }}\"\n  ],\n  \"userId\": \"YOUR_OPENPHONE_USER_ID\"\n}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3904,
+        2288
+      ],
+      "id": "6af70b99-c031-4a4e-a72e-49484bb7dd83",
+      "name": "Send a text message25",
+      "webhookId": "REPLACE_ME",
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_TELEGRAM_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// FILTER: 24 saat içindeki randevular\n// Sabit timezone: America/Los_Angeles (Santa Ana, CA)\nconst TIMEZONE = 'America/Los_Angeles';\nconst results = [];\n\nconst nowUtc = $now.toUTC();\nconst nowMillis = nowUtc.toMillis();\nconst currentTimeUtcFormatted = nowUtc.toFormat('yyyy-MM-dd HH:mm:ss');\n\nconsole.log('Current Time UTC: ' + currentTimeUtcFormatted);\nconsole.log('Checking appointments...\\n');\n\nfor (let i = 0; i < $input.all().length; i++) {\n  const item = $input.all()[i].json;\n\n  const apptDate = item.appointment_date;\n  const apptTime = item.appointment_time;\n\n  if (!apptDate || !apptTime) {\n    console.log('Skipping: appointment_date or appointment_time missing');\n    continue;\n  }\n\n  // appointment_date: YYYY-MM-DD\n  const dateParts = apptDate.split('-');\n  const year  = parseInt(dateParts[0], 10);\n  const month = parseInt(dateParts[1], 10);\n  const day   = parseInt(dateParts[2], 10);\n\n  // appointment_time: 12:45 PM veya 09:30 (24h)\n  let hour, minute;\n  const ampmMatch = apptTime.match(/(\\d+):(\\d+)\\s*(AM|PM)/i);\n  const hmMatch   = apptTime.match(/^(\\d{1,2}):(\\d{2})$/);\n\n  if (ampmMatch) {\n    hour   = parseInt(ampmMatch[1], 10);\n    minute = parseInt(ampmMatch[2], 10);\n    const meridiem = ampmMatch[3].toUpperCase();\n    if (meridiem === 'PM' && hour !== 12) hour += 12;\n    if (meridiem === 'AM' && hour === 12)  hour = 0;\n  } else if (hmMatch) {\n    hour   = parseInt(hmMatch[1], 10);\n    minute = parseInt(hmMatch[2], 10);\n  } else {\n    console.log('Invalid time format: ' + apptTime);\n    continue;\n  }\n\n  const apptDateTime = $now.setZone(TIMEZONE).set({ year, month, day, hour, minute, second: 0, millisecond: 0 });\n  const apptMillis   = apptDateTime.toUTC().toMillis();\n\n  const diffMs      = apptMillis - nowMillis;\n  const diffHours   = diffMs / (1000 * 60 * 60);\n  const diffMinutes = Math.floor(diffMs / (1000 * 60));\n  const absDiffHours   = Math.abs(diffHours);\n  const absDiffMinutes = Math.abs(diffMinutes);\n\n  const status = diffHours > 0 ? 'FUTURE' : diffHours < 0 ? 'PAST' : 'NOW';\n  console.log(`Appointment: ${apptDate} ${apptTime} | ${status} | Hours: ${diffHours.toFixed(2)}`);\n\n  if (absDiffHours < 24) {\n    console.log('✅ INCLUDED\\n');\n    results.push({\n      json: {\n        ...item,\n        hoursUntil:      Math.floor(diffHours),\n        minutesUntil:    diffMinutes,\n        hoursFromNow:    Math.floor(absDiffHours),\n        minutesFromNow:  absDiffMinutes,\n        isPast:          diffHours < 0,\n        isFuture:        diffHours > 0,\n        isNow:           diffHours === 0,\n        currentTimeUTC:  currentTimeUtcFormatted,\n      },\n    });\n  } else {\n    console.log('❌ EXCLUDED - More than 24 hours away\\n');\n  }\n}\n\nresults.sort((a, b) => a.json.minutesFromNow - b.json.minutesFromNow);\nconsole.log('Total results: ' + results.length);\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2752,
+        1408
+      ],
+      "id": "8c4bf962-aecb-42fa-a7a7-e5ac8dadbb01",
+      "name": "Code in JavaScript7"
+    },
+    {
+      "parameters": {
+        "jsCode": "// FILTER: 1-2 saat sonraki randevular (sadece FUTURE)\n// Sabit timezone: America/Los_Angeles (Santa Ana, CA)\nconst TIMEZONE = 'America/Los_Angeles';\nconst between1And2Hours = [];\n\nconst nowUtc = $now.toUTC();\nconst nowMillis = nowUtc.toMillis();\nconst currentTimeUtcFormatted = nowUtc.toFormat('yyyy-MM-dd HH:mm:ss');\n\nconsole.log('=== FILTERING FUTURE APPOINTMENTS BETWEEN 1-2 HOURS ===');\nconsole.log('Current Time UTC: ' + currentTimeUtcFormatted);\nconsole.log('Checking appointments...\\n');\n\nfor (let i = 0; i < $input.all().length; i++) {\n  const item = $input.all()[i].json;\n\n  const apptDate = item.appointment_date;\n  const apptTime = item.appointment_time;\n\n  if (!apptDate || !apptTime) {\n    console.log('Skipping: appointment_date or appointment_time missing');\n    continue;\n  }\n\n  const dateParts = apptDate.split('-');\n  const year  = parseInt(dateParts[0], 10);\n  const month = parseInt(dateParts[1], 10);\n  const day   = parseInt(dateParts[2], 10);\n\n  let hour, minute;\n  const ampmMatch = apptTime.match(/(\\d+):(\\d+)\\s*(AM|PM)/i);\n  const hmMatch   = apptTime.match(/^(\\d{1,2}):(\\d{2})$/);\n\n  if (ampmMatch) {\n    hour   = parseInt(ampmMatch[1], 10);\n    minute = parseInt(ampmMatch[2], 10);\n    const meridiem = ampmMatch[3].toUpperCase();\n    if (meridiem === 'PM' && hour !== 12) hour += 12;\n    if (meridiem === 'AM' && hour === 12)  hour = 0;\n  } else if (hmMatch) {\n    hour   = parseInt(hmMatch[1], 10);\n    minute = parseInt(hmMatch[2], 10);\n  } else {\n    console.log('Invalid time format: ' + apptTime);\n    continue;\n  }\n\n  const apptDateTime = $now.setZone(TIMEZONE).set({ year, month, day, hour, minute, second: 0, millisecond: 0 });\n  const apptMillis   = apptDateTime.toUTC().toMillis();\n  const diffMs       = apptMillis - nowMillis;\n  const diffHours    = diffMs / (1000 * 60 * 60);\n  const diffMinutes  = Math.floor(diffMs / (1000 * 60));\n\n  const status = diffHours > 0 ? 'FUTURE' : diffHours < 0 ? 'PAST' : 'NOW';\n  console.log(`Appointment: ${apptDate} ${apptTime} | ${status} | Hours: ${diffHours.toFixed(2)}`);\n\n  if (diffHours >= 1 && diffHours < 2) {\n    console.log('✅ INCLUDED - Future & between 1-2 hours\\n');\n    between1And2Hours.push({\n      json: {\n        ...item,\n        hoursUntil:     Math.floor(diffHours),\n        minutesUntil:   diffMinutes,\n        currentTimeUTC: currentTimeUtcFormatted,\n        isPast:         false,\n        isFuture:       true,\n      },\n    });\n  } else {\n    console.log(`❌ EXCLUDED - ${diffHours < 0 ? 'Past' : diffHours < 1 ? 'Less than 1 hour' : 'More than 2 hours'}\\n`);\n  }\n}\n\nbetween1And2Hours.sort((a, b) => a.json.minutesUntil - b.json.minutesUntil);\nconsole.log('Total results (1-2 hours, future only): ' + between1And2Hours.length);\nreturn between1And2Hours;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2768,
+        1872
+      ],
+      "id": "57560621-7a71-4e19-82ee-b37002aae317",
+      "name": "Code in JavaScript8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6edc1c68-cba6-481c-a7ef-19428efa0bd9",
+              "leftValue": "={{ $json.test_ride_2_before }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3104,
+        1872
+      ],
+      "id": "9c73d923-3787-452b-ada0-d6c0105b498d",
+      "name": "If9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6edc1c68-cba6-481c-a7ef-19428efa0bd9",
+              "leftValue": "={{ $json.test_ride_24_before }}",
+              "rightValue": "No",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3072,
+        1408
+      ],
+      "id": "b6f1f0b1-7221-45b0-a239-bf6a734d606b",
+      "name": "If10"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "appointments",
+        "limit": 500,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "appointment_date",
+              "condition": "eq",
+              "keyValue": "={{ JSON.parse($json.body).appointment_date }}"
+            },
+            {
+              "keyName": "appointment_time",
+              "condition": "eq",
+              "keyValue": "={{ JSON.parse($json.body).appointment_time || JSON.parse($json.body).time }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "=scheduled"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2288,
+        464
+      ],
+      "id": "3363394d-9780-42ba-8179-98f12095c9c9",
+      "name": "Check existing appointment slot1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_SUPABASE_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5d304040-2925-4e28-a921-3b0cdde4a1f7",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2496,
+        464
+      ],
+      "id": "7625e631-c04f-4eeb-bbc4-45bf517750de",
+      "name": "If1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"message\": \"This time slot is already taken. Please choose another time.\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2848,
+        656
+      ],
+      "id": "b0d62391-34ad-4c46-964d-7aac4702180e",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "available-slots",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        96
+      ],
+      "id": "4481ec86-f53d-4246-a541-cd500dd31d8c",
+      "name": "Available Slots Webhook1",
+      "webhookId": "REPLACE_ME"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "appointments",
+        "limit": 500,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "appointment_date",
+              "condition": "eq",
+              "keyValue": "={{ $json.body.date }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "scheduled"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        96
+      ],
+      "id": "cb5bdca5-ffee-477d-b373-4934b74b5a4c",
+      "name": "Get many rows3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "REPLACE_ME",
+          "name": "YOUR_SUPABASE_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const allSlots = [\n  \"09:30\",\n  \"10:10\",\n  \"10:50\",\n  \"11:30\",\n  \"12:10\",\n  \"12:50\",\n  \"13:30\",\n  \"14:10\",\n  \"14:50\",\n  \"15:30\",\n  \"16:10\",\n  \"16:50\",\n  \"17:30\",\n  \"18:10\",\n  \"18:50\",\n  \"19:30\",\n  \"20:10\",\n  \"20:50\",\n  \"21:30\",\n  \"22:10\",\n  \"22:50\"\n];\n\n// Saati 24h HH:mm formatına çevir\nfunction normalizeTime(value) {\n  if (!value) return \"\";\n\n  const str = String(value).trim().toUpperCase();\n\n  // 12 saatlik format: 10:30 AM / 9:05 PM\n  const ampmMatch = str.match(/^(\\d{1,2}):(\\d{2})\\s*(AM|PM)$/);\n  if (ampmMatch) {\n    let hour = parseInt(ampmMatch[1], 10);\n    const minute = ampmMatch[2];\n    const meridiem = ampmMatch[3];\n\n    if (meridiem === \"PM\" && hour !== 12) hour += 12;\n    if (meridiem === \"AM\" && hour === 12) hour = 0;\n\n    return `${String(hour).padStart(2, \"0\")}:${minute}`;\n  }\n\n  // 24 saatlik format: 9:30 / 14:10 / 09:30\n  const hmMatch = str.match(/^(\\d{1,2}):(\\d{2})$/);\n  if (hmMatch) {\n    const hour = String(parseInt(hmMatch[1], 10)).padStart(2, \"0\");\n    const minute = hmMatch[2];\n    return `${hour}:${minute}`;\n  }\n\n  return str;\n}\n\n// DB'den dolu saatleri al ve normalize et\nconst booked = $input.all()\n  .map(item => normalizeTime(item.json.appointment_time))\n  .filter(Boolean);\n\n// Tekilleştir\nconst bookedSet = [...new Set(booked)];\n\n// Slot listesi oluştur\nconst slots = allSlots.map(time => ({\n  time,\n  available: !bookedSet.includes(time),\n}));\n\nreturn [\n  {\n    json: {\n      success: true,\n      booked: bookedSet,\n      slots\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2528,
+        96
+      ],
+      "id": "ad356fca-9f4b-4c8b-8f65-651a5dbef0f8",
+      "name": "Build available slots1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2736,
+        96
+      ],
+      "id": "f031ed9a-0a24-415f-92d6-a6c4cb2f1531",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1363d468-5a81-4f05-b620-a23014bddd12",
+              "name": "body.appointment_date",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.appointment_date }}",
+              "type": "string"
+            },
+            {
+              "id": "676cb57e-0717-44df-b96b-e7c8c0744dc2",
+              "name": "body.appointment_time",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.appointment_time }}",
+              "type": "string"
+            },
+            {
+              "id": "5828c06f-c7be-4e79-915e-0bac19977c18",
+              "name": "body.time",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.time }}",
+              "type": "string"
+            },
+            {
+              "id": "283231e3-1fe0-40c2-b1ca-72d231696dbc",
+              "name": "body.date",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.date }}",
+              "type": "string"
+            },
+            {
+              "id": "0d43b810-673f-4cfe-aaa8-20dae52055da",
+              "name": "body.firstName",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.firstName }}",
+              "type": "string"
+            },
+            {
+              "id": "13ae0c55-3dd9-43ae-8e89-a5ea994f04bb",
+              "name": "body.lastName",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.lastName }}",
+              "type": "string"
+            },
+            {
+              "id": "951e4e9d-9b60-4a84-a818-37a49871ba82",
+              "name": "body.email",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "6c9eb857-629e-4265-b002-7d4a4ba4e34c",
+              "name": "body.phone",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "dd63a3c8-ff82-48ce-8ded-29e71f2445dc",
+              "name": "body.bikeModel",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.bikeModel }}",
+              "type": "string"
+            },
+            {
+              "id": "fa0abafc-f3ac-4396-b987-21d5e2f34e26",
+              "name": "body.testRider",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.testRider }}",
+              "type": "string"
+            },
+            {
+              "id": "f2e96936-a61a-4785-a8dc-d6e50a191024",
+              "name": "body.referralSource",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.referralSource }}",
+              "type": "string"
+            },
+            {
+              "id": "94d16044-4227-4458-bf91-e79b7707aada",
+              "name": "body.message",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "387cf99d-cde4-4050-8b7b-6f7c6f6e3c24",
+              "name": "body.appointmentNumber",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.appointmentNumber }}",
+              "type": "string"
+            },
+            {
+              "id": "021b69d6-14b4-4746-996d-ba0b5368927d",
+              "name": "body.location",
+              "value": "={{ $('Webhook costumer appointment').item.json.body.location }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2704,
+        448
+      ],
+      "id": "96e4f74f-582c-456e-b011-8ac5fefa05de",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook costumer appointment": {
+      "main": [
+        [
+          {
+            "node": "Check existing appointment slot1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP summary": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row2": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row3": {
+      "main": [
+        [
+          {
+            "node": "Merge11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Get many rows2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message22": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "HTTP summary9": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Send a text message23": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Send a text message24": {
+      "main": [
+        [
+          {
+            "node": "Merge11",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "HTTP summary10": {
+      "main": [
+        [
+          {
+            "node": "Merge11",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Send a text message25": {
+      "main": [
+        [
+          {
+            "node": "Merge11",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript7": {
+      "main": [
+        [
+          {
+            "node": "If10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript8": {
+      "main": [
+        [
+          {
+            "node": "If9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If9": {
+      "main": [
+        [
+          {
+            "node": "HTTP summary10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message24",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message25",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If10": {
+      "main": [
+        [
+          {
+            "node": "HTTP summary9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message22",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message23",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check existing appointment slot1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Available Slots Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Get many rows3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows3": {
+      "main": [
+        [
+          {
+            "node": "Build available slots1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build available slots1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "REPLACE_ME"
+  }
+}
